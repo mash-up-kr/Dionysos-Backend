@@ -1,2 +1,3 @@
 rootProject.name = 'dionysos-backend'
 
+include 'dionysos-api'
