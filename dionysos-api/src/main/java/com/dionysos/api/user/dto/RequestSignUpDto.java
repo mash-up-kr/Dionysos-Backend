@@ -1,9 +1,7 @@
 package com.dionysos.api.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.dionysos.api.user.entity.User;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
@@ -12,4 +10,17 @@ import lombok.ToString;
 public class RequestSignUpDto {
     private String uid;
     private String nickname;
+
+    @Builder
+    public RequestSignUpDto(String uid, String nickname) {
+        this.uid = uid;
+        this.nickname = nickname;
+    }
+
+    public User toEntity() {
+        return User.builder()
+                .uid(uid)
+                .nickname(nickname)
+                .build();
+    }
 }
