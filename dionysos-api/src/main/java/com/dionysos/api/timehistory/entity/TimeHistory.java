@@ -1,6 +1,7 @@
 package com.dionysos.api.timehistory.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,5 +22,11 @@ public class TimeHistory {
 
     private LocalDateTime historyDay;
     private Long duration;
+
+    @Builder
+    public TimeHistory(LocalDateTime historyDay, Long duration) {
+        this.historyDay = historyDay;
+        this.duration = duration;
+    }
 
 }
