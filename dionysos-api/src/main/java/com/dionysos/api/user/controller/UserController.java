@@ -22,7 +22,7 @@ public class UserController {
 
     private static final String HEADER_AUTH = "Authorization";
 
-    @PostMapping("/sign-in")
+    @PostMapping("/signin")
     public ResponseEntity signIn(@RequestBody RequestUIDDto requestBody) {
 
         if (userService.isExisted(requestBody.getUid())) {
@@ -38,15 +38,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     public ResponseEntity signUp(@RequestBody RequestUserDto requestBody) {
         userService.signUp(requestBody);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/my")
-    public ResponseEntity<ResponseUserDto> myProfile(@RequestBody RequestUIDDto requestBody) {
-        User user = userService.getFromUid(requestBody.getUid());
+    public ResponseEntity<ResponseUserDto> myProfile() {
+        User user = userService.getFromUid(jwtService.getUid());
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
@@ -57,8 +57,13 @@ public class UserController {
     }
 
     @PutMapping("/my")
-    public ResponseEntity<ResponseUserDto> changeProfile(@RequestBody RequestUserDto requestBody) {
-        User user = userService.setNickname(requestBody);
+    public ResponseEntity<ResponseUserDto> changeProfile(@RequestBody RequestNicknameDto requestBody) {
+        RequestUserDto requestUserDto = RequestUserDto.builder()
+                .uid(jwtService.getUid())
+                .nickname(requestBody.getNickname())
+                .build();
+
+        User user = userService.setNickname(requestUserDto);
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
@@ -68,8 +73,8 @@ public class UserController {
                 .body(responseUserDto);
     }
 
-    @DeleteMapping("/sign-out")
-    public ResponseEntity signOut(@RequestBody RequestUserDto requestBody) {
+    @DeleteMapping("/signout")
+    public ResponseEntity signOut(@RequestBody RequestUIDDto requestBody) {
         userService.signOut(requestBody);
         return ResponseEntity.status(HttpStatus.GONE).build();
     }

@@ -2,6 +2,7 @@ package com.dionysos.api.user.service;
 
 import com.dionysos.api.exception.BadRequestException;
 import com.dionysos.api.exception.NotExistUserException;
+import com.dionysos.api.user.dto.RequestUIDDto;
 import com.dionysos.api.user.dto.RequestUserDto;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.repository.UserRepository;
@@ -14,7 +15,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public boolean isExisted(String uid) {
         return userRepository.findByUid(uid).isPresent();
@@ -46,7 +47,7 @@ public class UserService {
     }
 
     @Transactional
-    public void signOut(RequestUserDto requestBody) {
+    public void signOut(RequestUIDDto requestBody) {
         User user = userRepository.findByUid(requestBody.getUid()).orElseThrow(NotExistUserException::new);
         userRepository.delete(user);
     }
