@@ -1,13 +1,17 @@
 package com.dionysos.api.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.dionysos.api.user.entity.User;
+import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 public class RequestUserDto {
     private String uid;
     private String nickname;
+
+    @Builder
+    public RequestUserDto(String uid, String nickname) {
+        this.uid = uid;
+        this.nickname = nickname;
+    }
 }

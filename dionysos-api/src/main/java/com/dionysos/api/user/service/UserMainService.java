@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserMainService {
 
-    private UserService userService;
-    private JwtService jwtService;
+    private final UserService userService;
+    private final JwtService jwtService;
 
     public ResponseUserDto getResponseUserDto() {
         String uid = jwtService.getUid();
@@ -20,8 +20,8 @@ public class UserMainService {
     public ResponseUserDto getResponseUserDto(String uid) {
         User user = userService.getFromUid(uid);
 
-        return ResponseUserDto
-                .builder()
+        return ResponseUserDto.builder()
+                .uid(user.getUid())
                 .nickname(user.getNickname())
                 .build();
     }
