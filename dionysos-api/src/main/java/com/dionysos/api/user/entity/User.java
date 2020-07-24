@@ -1,6 +1,5 @@
 package com.dionysos.api.user.entity;
 
-import com.dionysos.api.user.dto.RequestSignUpDto;
 import lombok.*;
 
 import javax.persistence.Entity;

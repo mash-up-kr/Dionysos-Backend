@@ -2,7 +2,6 @@ package com.dionysos.api.user.service;
 
 import com.dionysos.api.exception.BadRequestException;
 import com.dionysos.api.exception.NotExistUserException;
-import com.dionysos.api.user.dto.RequestSignUpDto;
 import com.dionysos.api.user.dto.RequestUserDto;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.repository.UserRepository;
@@ -17,13 +16,13 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    public boolean isExisted(String uid, String nickname) {
-        return userRepository.findById(uid).filter(u -> u.getNickname().equals(nickname)).isPresent();
+    public boolean isExisted(String uid) {
+        return userRepository.findByUid(uid).isPresent();
     }
 
     @Transactional
-    public void signUp(RequestSignUpDto requestSignUpDto) {
-        if (isExisted(requestSignUpDto.getUid(), requestSignUpDto.getNickname()))
+    public void signUp(RequestUserDto requestSignUpDto) {
+        if (isExisted(requestSignUpDto.getUid()))
             throw new BadRequestException("이미 가입한 회원입니다.");
 
         User user = User.builder()
@@ -35,13 +34,20 @@ public class UserService {
     }
 
     public User getFromUid(String uid) {
-        return userRepository.findById(uid).orElseThrow(NotExistUserException::new);
+        return userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
     }
 
     @Transactional
-    public void setNickname(RequestUserDto requestUserDto) {
-        User user = userRepository.findById(requestUserDto.getUid()).orElseThrow(NotExistUserException::new);
+    public User setNickname(RequestUserDto requestUserDto) {
+        User user = userRepository.findByUid(requestUserDto.getUid()).orElseThrow(NotExistUserException::new);
         user.changeNickname(requestUserDto.getNickname());
         userRepository.save(user);
+        return user;
+    }
+
+    @Transactional
+    public void signOut(RequestUserDto requestBody) {
+        User user = userRepository.findByUid(requestBody.getUid()).orElseThrow(NotExistUserException::new);
+        userRepository.delete(user);
     }
 }

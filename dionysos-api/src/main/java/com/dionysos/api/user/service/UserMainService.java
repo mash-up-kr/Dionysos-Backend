@@ -20,8 +20,8 @@ public class UserMainService {
     public ResponseUserDto getResponseUserDto(String uid) {
         User user = userService.getFromUid(uid);
 
-        return ResponseUserDto
-                .builder()
+        return ResponseUserDto.builder()
+                .uid(user.getUid())
                 .nickname(user.getNickname())
                 .build();
     }
