@@ -22,13 +22,13 @@ public class User {
 
     private String nickname;
 
-    private User(RequestSignUpDto requestSignUpDto) {
-        this.uid = requestSignUpDto.getUid();
-        this.nickname = requestSignUpDto.getNickname();
+    @Builder
+    public User(String uid, String nickname) {
+        this.uid = uid;
+        this.nickname = nickname;
     }
 
-    public static User from(RequestSignUpDto reqeustSignUpDto) {
-        return new User(reqeustSignUpDto);
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
     }
-
 }

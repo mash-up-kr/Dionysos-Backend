@@ -1,7 +1,9 @@
 package com.dionysos.api.user.service;
 
 import com.dionysos.api.exception.BadRequestException;
+import com.dionysos.api.exception.NotExistUserException;
 import com.dionysos.api.user.dto.RequestSignUpDto;
+import com.dionysos.api.user.dto.RequestUserDto;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +26,22 @@ public class UserService {
         if (isExisted(requestSignUpDto.getUid(), requestSignUpDto.getNickname()))
             throw new BadRequestException("이미 가입한 회원입니다.");
 
-        User user = User.from(requestSignUpDto);
+        User user = User.builder()
+                        .uid(requestSignUpDto.getUid())
+                        .nickname(requestSignUpDto.getNickname())
+                        .build();
+
+        userRepository.save(user);
     }
 
     public User getFromUid(String uid) {
-        return userRepository.findById(uid).get();
+        return userRepository.findById(uid).orElseThrow(NotExistUserException::new);
+    }
+
+    @Transactional
+    public void setNickname(RequestUserDto requestUserDto) {
+        User user = userRepository.findById(requestUserDto.getUid()).orElseThrow(NotExistUserException::new);
+        user.changeNickname(requestUserDto.getNickname());
+        userRepository.save(user);
     }
 }
