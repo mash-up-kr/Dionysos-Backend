@@ -5,6 +5,7 @@ import com.dionysos.api.user.dto.RequestUserDto;
 import com.dionysos.api.user.service.JwtService;
 import com.dionysos.api.user.service.UserMainService;
 import com.dionysos.api.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,17 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserMainService userMainService;
-
-    @Autowired
-    private JwtService jwtService;
+    private final UserService userService;
+    private final UserMainService userMainService;
+    private final JwtService jwtService;
 
     private static final String HEADER_AUTH = "Authorization";
 
