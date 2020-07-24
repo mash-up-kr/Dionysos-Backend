@@ -1,10 +1,7 @@
 package com.dionysos.api.user.entity;
 
 import com.dionysos.api.user.dto.RequestSignUpDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,15 +17,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private String uid;
 
     private String nickname;
-
-    @Builder
-    public User(String uid, String nickname) {
-        this.uid = uid;
-        this.nickname = nickname;
-    }
 
     private User(RequestSignUpDto requestSignUpDto) {
         this.uid = requestSignUpDto.getUid();
