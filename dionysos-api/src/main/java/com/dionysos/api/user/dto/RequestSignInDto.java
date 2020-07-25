@@ -7,17 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ResponseSignInDto {
+public class RequestSignInDto {
     private String uid;
-    private String nickname;
-    private String jwt;
     private ProviderType provider;
 
     @Builder
-    private ResponseSignInDto(String uid, String nickname, String jwt, ProviderType provider) {
+    private RequestSignInDto(String uid, ProviderType provider) {
         this.uid = uid;
-        this.nickname = nickname;
-        this.jwt = jwt;
         this.provider = provider;
     }
 }

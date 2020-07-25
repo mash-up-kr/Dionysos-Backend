@@ -27,8 +27,11 @@ public class UserService {
         return userRepository.findByUid(uid).isPresent();
     }
 
-    public ResponseEntity<ResponseSignInDto> signIn() {
-        Optional<User> optionalUser = userRepository.findByUid(jwtService.getUid());
+    public ResponseEntity<ResponseSignInDto> signIn(RequestSignInDto requestSignInDto) {
+        String provider = requestSignInDto.getProvider().toString();
+        String convertedUid = provider + "_" + requestSignInDto.getUid();
+
+        Optional<User> optionalUser = userRepository.findByUid(convertedUid);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
