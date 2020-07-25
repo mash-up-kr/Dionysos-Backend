@@ -34,7 +34,9 @@ public class UserService {
             User user = optionalUser.get();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(ResponseSignInDto.builder()
-                        .nickname(user.getNickname())
+                            .uid(user.getUid())
+                            .nickname(user.getNickname())
+                            .jws(jwtService.create(user.getUid()))
                     .build());
          } else {
             throw new NotExistUserException();
