@@ -2,11 +2,8 @@ package com.dionysos.api.user.controller;
 
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
-import com.dionysos.api.user.service.JwtService;
-import com.dionysos.api.user.service.UserMainService;
 import com.dionysos.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +16,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<ResponseUserDto> signIn(@RequestBody RequestUIDDto requestBody) {
-        return userService.signIn(requestBody);
+    public ResponseEntity<ResponseSignInDto> signIn() {
+        return userService.signIn();
     }
 
     @PostMapping("/signup")
-    public ResponseEntity signUp(@RequestBody RequestUserDto requestBody) {
-        userService.signUp(requestBody);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ResponseSignUpDto> signUp(@RequestBody RequestSignUpDto requestBody) {
+        return userService.signUp(requestBody);
     }
 
     @GetMapping("/my")
@@ -35,6 +31,7 @@ public class UserController {
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
+                .providerType(user.getProvider())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -42,13 +39,13 @@ public class UserController {
     }
 
     @PutMapping("/my")
-    public ResponseEntity<ResponseUserDto> changeProfile(@RequestBody RequestNicknameDto requestBody) {
+    public ResponseEntity<ResponseUserDto> changeProfile(@RequestBody ReqeustChangeNicknameDto requestBody) {
         return userService.changeProfile(requestBody);
     }
 
     @DeleteMapping("/signout")
-    public ResponseEntity signOut(@RequestBody RequestUIDDto requestBody) {
-        userService.signOut(requestBody);
+    public ResponseEntity signOut() {
+        userService.signOut();
         return ResponseEntity.status(HttpStatus.GONE).build();
     }
 

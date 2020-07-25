@@ -1,8 +1,6 @@
 package com.dionysos.api.user.service;
 
 import com.dionysos.api.exception.UnAuthorizedException;
-import com.dionysos.api.user.dto.RequestUIDDto;
-import com.dionysos.api.user.dto.RequestUserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -27,13 +25,13 @@ public class JwtService {
 
     private static final String HEADER_AUTH = "Authorization";
 
-    public String create(RequestUIDDto requestUserDto) {
+    public String create(String uid) {
         Key key = Keys.hmacShaKeyFor(generateKey());
 
         String jws = Jwts.builder()
                         .setHeaderParam("typ", "JWT")
                         .setSubject("user")
-                        .claim("uid", requestUserDto.getUid())
+                        .claim("uid", uid)
                         .signWith(key, SignatureAlgorithm.HS256)
                         .compact();
 

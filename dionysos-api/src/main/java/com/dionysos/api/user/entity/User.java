@@ -22,9 +22,10 @@ public class User {
     private ProviderType provider;
 
     @Builder
-    private User(String uid, String nickname) {
+    private User(String uid, String nickname, ProviderType provider) {
         this.uid = uid;
         this.nickname = nickname;
+        this.provider = provider;
     }
 
     public void changeNickname(String nickname) {
