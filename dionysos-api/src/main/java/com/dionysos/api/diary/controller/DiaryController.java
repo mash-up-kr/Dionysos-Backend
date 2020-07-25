@@ -27,12 +27,12 @@ public class DiaryController {
     private final UserService userService;
     private final DiaryService diaryService;
 
-    @GetMapping("")
-    public ResponseEntity<List<Diary>> diaryList() {
-        User user = userService.getFromUid();
-        List<Diary> diaryList = (List<Diary>) diaryService.findAll();
-        return new ResponseEntity<List<Diary>>(diaryList, new HttpHeaders(), HttpStatus.OK);
-    }
+//    @GetMapping("")
+//    public ResponseEntity<List<Diary>> diaryList() {
+//        User user = userService.getFromUid();
+//        List<Diary> diaryList = (List<Diary>) diaryService.findAll();
+//        return new ResponseEntity<List<Diary>>(diaryList, new HttpHeaders(), HttpStatus.OK);
+//    }
 
     @PostMapping("/save")
     public ResponseEntity create(@RequestParam("data") MultipartFile multipartFile,

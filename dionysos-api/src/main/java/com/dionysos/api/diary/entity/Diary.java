@@ -19,8 +19,8 @@ public class Diary {
     private String imageUrl;
     private String content;
 
-    @OneToMany(mappedBy = "user")
-    @Column(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
