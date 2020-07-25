@@ -1,5 +1,7 @@
 package com.dionysos.api.user.controller;
 
+import com.dionysos.api.exception.NotExistNicknameException;
+import com.dionysos.api.exception.NotExistUserException;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
@@ -23,6 +25,16 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<ResponseSignUpDto> signUp(@RequestBody RequestSignUpDto requestBody) {
         return userService.signUp(requestBody);
+    }
+
+    @PostMapping("/check/nickname")
+    public ResponseEntity checkNickname(@RequestBody RequestNicknameCheckDto requestBody) {
+        boolean result = userService.existNickname(requestBody);
+        if (result == true) {
+            throw new NotExistNicknameException();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @GetMapping("/my")

@@ -85,6 +85,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public boolean existNickname(RequestNicknameCheckDto requestNicknameCheckDto) {
+        return userRepository.findByNickname(requestNicknameCheckDto.getNickname()).isPresent();
+    }
+
+    @Transactional(readOnly = true)
     public User getFromUid(String uid) {
         return userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
     }
