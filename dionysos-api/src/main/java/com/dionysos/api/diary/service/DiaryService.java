@@ -1,19 +1,17 @@
 package com.dionysos.api.diary.service;
 
-import com.dionysos.api.diary.dto.DiaryListResponseDto;
 import com.dionysos.api.diary.dto.RequestCreateDiaryDto;
 import com.dionysos.api.diary.dto.RequestUpdateDiaryDto;
 import com.dionysos.api.diary.dto.ResponseDiaryDto;
 import com.dionysos.api.diary.entity.Diary;
 import com.dionysos.api.diary.repository.DiaryRepository;
 import com.dionysos.api.exception.BadRequestException;
+import com.dionysos.api.exception.UnAuthorizedException;
 import com.dionysos.api.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,36 +30,52 @@ public class DiaryService {
         diaryRepository.save(diary);
     }
 
-    public void update(Long id, RequestUpdateDiaryDto requestUpdateDiaryDto, User user) {
-        Diary searchedDiary = diaryRepository.findById(id).orElseThrow(() -> new BadRequestException("해당 id가 없습니다.id= "+id ));
+    public void update(Long id, RequestUpdateDiaryDto requestUpdateDiaryDto, Long user_id) {
+        Diary diary = diaryRepository.findById(id).orElseThrow(() -> new BadRequestException("해당 id가 없습니다.id= "+ id));
 
-        if (searchedDiary.getUser().getId() != user.getId()) {
-            throw new BadRequestException("해당 게시글의 주인이 아닙니다.");
+        if (diary.getUser().getId() != user_id) {
+            throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
         }
 
-        searchedDiary.update(requestUpdateDiaryDto.getImageUrl(), requestUpdateDiaryDto.getContent());
-    }
-
-    public ResponseDiaryDto findById(Long id) {
-        Diary entity = diaryRepository.findById(id).orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= "+id));
-
-        return new ResponseDiaryDto(entity);
+        diary.update(requestUpdateDiaryDto.getImageUrl(), requestUpdateDiaryDto.getContent());
     }
 
     @Transactional
-    public void delete(Long id) {
-        Diary diary = diaryRepository.findById(id).orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= "+id));
+    public void delete(Long id, Long user_id) {
+        Diary diary = diaryRepository.findById(id).orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= "+ id)));
+
+        if (diary.getUser().getId() != user_id) {
+            throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
+        }
+
         diaryRepository.delete(diary);
     }
 
-    public List<Diary> findAll(int user_id) {
-        return diaryRepository.findAllByUserId().stream()
-                .map(DiaryListResponseDto::new)
+    @Transactional(readOnly = true)
+    public List<ResponseDiaryDto> findAll(Long user_id) {
+        return diaryRepository.findAllByUserId(user_id).stream()
+                .map(diary -> ResponseDiaryDto.builder()
+                        .id(diary.getId())
+                        .content(diary.getContent())
+                        .imageUrl(diary.getImageUrl())
+                        .uid(diary.getUser().getUid())
+                        .build())
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<Diary> getDiaries(User user) {
-        return diaryRepository.findAllByUserId(user.getId());
+    public ResponseDiaryDto findById(Long id, Long user_id) {
+        Diary diary = diaryRepository.findById(id).orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= "+ id)));
+
+        if (diary.getUser().getId() != user_id) {
+            throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
+        }
+
+        return ResponseDiaryDto.builder()
+                .uid(diary.getUser().getUid())
+                .imageUrl(diary.getImageUrl())
+                .id(diary.getId())
+                .content(diary.getContent())
+                .build();
     }
 }

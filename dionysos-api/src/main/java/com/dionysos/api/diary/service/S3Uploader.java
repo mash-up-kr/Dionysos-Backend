@@ -54,7 +54,7 @@ public class S3Uploader implements FileUploader {
             amazonS3Client.putObject(putObjectRequest);
         } catch (IOException e) {
             log.error("{} upload fail...", fileName);
-            // TODO exception 정의
+            // TODO: 적절한 예외 생성
             throw new RuntimeException("파일 업로드 실패!");
         }
 

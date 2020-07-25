@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,14 +29,19 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @GetMapping("")
-    public ResponseEntity<List<Diary>> diaryList() {
+    public ResponseEntity<List<ResponseDiaryDto>> diaryList() {
         User user = userService.getFromUid();
-        List<Diary> diaryList = diaryService.getDiaries(user);
-        return new ResponseEntity<List<Diary>>(diaryList, new HttpHeaders(), HttpStatus.OK);
+        List<ResponseDiaryDto> diaryList = diaryService.findAll(user.getId());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(diaryList);
     }
 
     @PostMapping("/save")
-    public ResponseEntity create(RequestCreateDiaryDto dto) {
+    public ResponseEntity create(@RequestParam(value = "data") MultipartFile data, @RequestParam(value = "content") String content) {
+        RequestCreateDiaryDto dto = RequestCreateDiaryDto.builder()
+                .content(content)
+                .uploadFile(data)
+                .build();
         User user = userService.getFromUid();
         diaryService.create(dto, user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -44,20 +50,22 @@ public class DiaryController {
     @PutMapping("/update/{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody RequestUpdateDiaryDto requestUpdateDiaryDto) {
         User user = userService.getFromUid();
-        diaryService.update(id, requestUpdateDiaryDto, user);
+        diaryService.update(id, requestUpdateDiaryDto, user.getId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDiaryDto> findById(@PathVariable Long id) {
-        ResponseDiaryDto dto = diaryService.findById(id);
+        User user = userService.getFromUid();
+        ResponseDiaryDto dto = diaryService.findById(id, user.getId());
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
-        diaryService.delete(id);
+        User user = userService.getFromUid();
+        diaryService.delete(id, user.getId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

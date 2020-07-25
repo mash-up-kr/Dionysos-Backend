@@ -62,3 +62,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/macos,windows
+
+application-aws.properties
+application-jwt.properties
