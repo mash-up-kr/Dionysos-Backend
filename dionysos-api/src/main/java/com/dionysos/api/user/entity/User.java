@@ -2,10 +2,7 @@ package com.dionysos.api.user.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -20,6 +17,9 @@ public class User {
     private String uid;
 
     private String nickname;
+
+    @Enumerated(EnumType.STRING)
+    private ProviderType provider;
 
     @Builder
     public User(String uid, String nickname) {
