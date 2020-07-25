@@ -1,11 +1,11 @@
 package com.dionysos.api.user.entity;
 
+import com.dionysos.api.timehistory.entity.TimeHistory;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +20,9 @@ public class User {
     private String uid;
 
     private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    private List<TimeHistory> timeHistoriesList;
 
     @Builder
     public User(String uid, String nickname) {

@@ -5,6 +5,7 @@ import com.dionysos.api.timehistory.dto.RequestUpdateTimeHistoryDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
 import com.dionysos.api.timehistory.entity.TimeHistory;
 import com.dionysos.api.timehistory.service.TimeHistoryService;
+import com.dionysos.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class TimeHistoryController {
 
     private final TimeHistoryService timeHistoryService;
+    private final UserService userService;
 
     @PostMapping("")
     //start라고 이름 바꾸고
     public ResponseEntity create(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) {
         timeHistoryService.create(requestSaveTimeHistoryDto);
+        userService.getFromUid();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

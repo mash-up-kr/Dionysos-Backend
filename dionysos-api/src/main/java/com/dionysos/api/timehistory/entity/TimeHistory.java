@@ -1,14 +1,12 @@
 package com.dionysos.api.timehistory.entity;
 
+import com.dionysos.api.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,6 +21,11 @@ public class TimeHistory {
     private LocalDateTime historyDay;
     private Long duration;
     private boolean isRunning;
+
+    @ManyToOne
+    @JoinColumn
+    //TimeHistory가 주인
+    private User user;
 
     @Builder
     public TimeHistory(LocalDateTime historyDay) {
