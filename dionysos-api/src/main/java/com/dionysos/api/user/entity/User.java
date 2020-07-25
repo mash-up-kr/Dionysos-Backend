@@ -2,10 +2,7 @@ package com.dionysos.api.user.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -21,10 +18,14 @@ public class User {
 
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    private ProviderType provider;
+
     @Builder
-    public User(String uid, String nickname) {
+    private User(String uid, String nickname, ProviderType provider) {
         this.uid = uid;
         this.nickname = nickname;
+        this.provider = provider;
     }
 
     public void changeNickname(String nickname) {

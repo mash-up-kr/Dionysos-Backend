@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class RequestUIDDto {
-    private String uid;
+public class ResponseSignInDto {
+    private String nickname;
 
     @Builder
-    public RequestUIDDto(String uid) {
-        this.uid = uid;
+    private ResponseSignInDto(String nickname) {
+        this.nickname = nickname;
     }
 }
