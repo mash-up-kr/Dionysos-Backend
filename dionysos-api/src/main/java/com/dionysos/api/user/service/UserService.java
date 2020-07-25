@@ -36,7 +36,7 @@ public class UserService {
                     .body(ResponseSignInDto.builder()
                             .uid(user.getUid())
                             .nickname(user.getNickname())
-                            .jws(jwtService.create(user.getUid()))
+                            .jwt(jwtService.create(user.getUid()))
                     .build());
          } else {
             throw new NotExistUserException();
@@ -58,14 +58,14 @@ public class UserService {
 
         userRepository.save(user);
 
-        String jws = jwtService.create(convertedUid);
+        String jwt = jwtService.create(convertedUid);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseSignUpDto.builder()
                         .uid(user.getUid())
                         .nickname(user.getNickname())
                         .providerType(user.getProvider())
-                        .jws(jws)
+                        .jwt(jwt)
                         .build()
                 );
     }
