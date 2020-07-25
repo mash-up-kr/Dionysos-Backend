@@ -10,9 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,11 @@ public class Diary {
 
     @Builder
     public Diary(String imageUrl, String content) {
+        this.imageUrl = imageUrl;
+        this.content = content;
+    }
+
+    public void update(String imageUrl, String content) {
         this.imageUrl = imageUrl;
         this.content = content;
     }
