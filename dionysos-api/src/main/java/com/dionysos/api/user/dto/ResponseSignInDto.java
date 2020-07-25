@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 public class ResponseSignInDto {
     private String uid;
     private String nickname;
-    private String jws;
+    private String jwt;
 
     @Builder
-    private ResponseSignInDto(String uid, String nickname, String jws) {
+    private ResponseSignInDto(String uid, String nickname, String jwt) {
         this.uid = uid;
         this.nickname = nickname;
-        this.jws = jws;
+        this.jwt = jwt;
     }
 }
