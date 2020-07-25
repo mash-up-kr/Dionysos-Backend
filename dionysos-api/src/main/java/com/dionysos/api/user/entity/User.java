@@ -24,10 +24,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<TimeHistory> timeHistoriesList;
 
+    @Enumerated(EnumType.STRING)
+    private ProviderType provider;
+
     @Builder
-    public User(String uid, String nickname) {
+    private User(String uid, String nickname, ProviderType provider) {
         this.uid = uid;
         this.nickname = nickname;
+        this.provider = provider;
     }
 
     public void changeNickname(String nickname) {

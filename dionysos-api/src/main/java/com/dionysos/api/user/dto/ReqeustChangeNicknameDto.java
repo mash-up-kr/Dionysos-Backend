@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class RequestNicknameDto {
+public class ReqeustChangeNicknameDto {
     private String nickname;
 
     @Builder
-    public RequestNicknameDto(String nickname) {
+    private ReqeustChangeNicknameDto(String nickname) {
         this.nickname = nickname;
     }
 }

@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ResponseNicknameDto {
+public class ResponseSignInDto {
     private String nickname;
 
     @Builder
-    public ResponseNicknameDto(String nickname) {
+    private ResponseSignInDto(String nickname) {
         this.nickname = nickname;
     }
 }
