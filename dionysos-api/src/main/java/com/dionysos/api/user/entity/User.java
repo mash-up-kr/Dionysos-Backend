@@ -22,7 +22,7 @@ public class User {
     private ProviderType provider;
 
     @Builder
-    public User(String uid, String nickname) {
+    private User(String uid, String nickname) {
         this.uid = uid;
         this.nickname = nickname;
     }
