@@ -8,8 +8,7 @@ import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +16,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public boolean isExisted(String uid) {
         return userRepository.findByUid(uid).isPresent();
     }
 
-    @Transactional
     public void signUp(RequestUserDto requestSignUpDto) {
         if (isExisted(requestSignUpDto.getUid()))
             throw new BadRequestException("이미 가입한 회원입니다.");
@@ -34,11 +33,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     public User getFromUid(String uid) {
         return userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
     }
 
-    @Transactional
     public User setNickname(RequestUserDto requestUserDto) {
         User user = userRepository.findByUid(requestUserDto.getUid()).orElseThrow(NotExistUserException::new);
         user.changeNickname(requestUserDto.getNickname());
@@ -46,7 +45,6 @@ public class UserService {
         return user;
     }
 
-    @Transactional
     public void signOut(RequestUIDDto requestBody) {
         User user = userRepository.findByUid(requestBody.getUid()).orElseThrow(NotExistUserException::new);
         userRepository.delete(user);
