@@ -9,17 +9,24 @@ import com.dionysos.api.diary.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class DiaryService {
+
     private final DiaryRepository diaryRepository;
+    private final S3Uploader s3Uploader;
 
     @Transactional
-    public Long create(RequestCreateDiaryDto requestCreateDiaryDto) {
-        return diaryRepository.save(requestCreateDiaryDto.toEntity())
+    public Long create(MultipartFile multipartFile, String content) throws IOException {
+        //upload multipartFile + get String Url
+        String imageUrl = s3Uploader.upload(multipartFile, "static");
+        RequestCreateDiaryDto dto = new RequestCreateDiaryDto(content);
+        return diaryRepository.save(dto.toEntity(imageUrl))
                 .getId();
     }
 

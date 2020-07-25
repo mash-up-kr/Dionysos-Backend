@@ -10,15 +10,13 @@ import lombok.NoArgsConstructor;
 public class RequestCreateDiaryDto {
     private Long id;
     private String content;
-    private String imageUrl;
 
     @Builder
-    public RequestCreateDiaryDto(String content, String imageUrl) {
+    public RequestCreateDiaryDto(String content) {
         this.content = content;
-        this.imageUrl = imageUrl;
     }
 
-    public Diary toEntity() {
+    public Diary toEntity(String imageUrl) {
         return Diary.builder()
                 .content(content)
                 .imageUrl(imageUrl)
