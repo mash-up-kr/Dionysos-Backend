@@ -22,11 +22,16 @@ public class TimeHistory {
 
     private LocalDateTime historyDay;
     private Long duration;
+    private boolean isRunning;
 
     @Builder
-    public TimeHistory(LocalDateTime historyDay, Long duration) {
+    public TimeHistory(LocalDateTime historyDay) {
         this.historyDay = historyDay;
-        this.duration = duration;
+        this.isRunning = true;
     }
 
+    public void update(Long duration) {
+        this.duration = duration;
+        this.isRunning = false;
+    }
 }
