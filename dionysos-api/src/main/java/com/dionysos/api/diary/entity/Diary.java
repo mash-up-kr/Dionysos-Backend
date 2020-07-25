@@ -24,9 +24,10 @@ public class Diary {
     private User user;
 
     @Builder
-    public Diary(String imageUrl, String content) {
+    private Diary(String imageUrl, String content, User user) {
         this.imageUrl = imageUrl;
         this.content = content;
+        this.user = user;
     }
 
     public void update(String imageUrl, String content) {

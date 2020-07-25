@@ -2,6 +2,7 @@ package com.dionysos.api.diary.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,51 +19,46 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class S3Uploader {
+public class S3Uploader implements FileUploader {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value(("${cloud.aws.s3.bucket}"))
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException  {
-        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("MultipartFile->File로의 전환에 실패"));
+    @Override
+    public String upload(MultipartFile uploadFile, String dirName) {
+        String fileName = toFileName(dirName, uploadFile);
 
-        return upload(uploadFile, dirName);
+        return putS3(uploadFile, fileName);
     }
 
-    public String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
-        String uploadImageUrl = putS3(uploadFile, fileName);
-        removeNewFile(uploadFile);
+    private String toFileName(String dirName, MultipartFile uploadFile) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(dirName);
+        sb.append("/");
+        sb.append(System.currentTimeMillis());
+        sb.append("_");
+        sb.append(uploadFile.getOriginalFilename());
 
-        return uploadImageUrl;
+        return sb.toString();
     }
 
-    private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+    private String putS3(MultipartFile uploadFile, String fileName) {
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(uploadFile.getContentType());
+
+        try {
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, uploadFile.getInputStream(),
+                    metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+            amazonS3Client.putObject(putObjectRequest);
+        } catch (IOException e) {
+            log.error("{} upload fail...", fileName);
+            // TODO exception 정의
+            throw new RuntimeException("파일 업로드 실패!");
+        }
 
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-    private void removeNewFile(File targetFile) {
-        if(targetFile.delete()) {
-            //
-        }
-        else {
-            //
-        }
-    }
-
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        if(convertFile.createNewFile()) {
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-
-        return Optional.empty();
-    }
 }

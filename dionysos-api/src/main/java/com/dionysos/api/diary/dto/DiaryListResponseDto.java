@@ -2,8 +2,10 @@ package com.dionysos.api.diary.dto;
 
 import com.dionysos.api.diary.entity.Diary;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class DiaryListResponseDto {
     private Long id;
     private String imageUrl;

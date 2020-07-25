@@ -12,7 +12,7 @@ public class RequestUpdateDiaryDto {
     private String content;
 
     @Builder
-    public RequestUpdateDiaryDto(String imageUrl, String content) {
+    private RequestUpdateDiaryDto(String imageUrl, String content) {
         this.imageUrl = imageUrl;
         this.content = content;
     }

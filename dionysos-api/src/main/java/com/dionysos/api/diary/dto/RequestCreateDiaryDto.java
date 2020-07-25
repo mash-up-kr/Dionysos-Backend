@@ -1,25 +1,23 @@
 package com.dionysos.api.diary.dto;
 
 import com.dionysos.api.diary.entity.Diary;
+import com.dionysos.api.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor
 public class RequestCreateDiaryDto {
-    private Long id;
     private String content;
+    private MultipartFile uploadFile;
 
-    @Builder
-    public RequestCreateDiaryDto(String content) {
-        this.content = content;
-    }
-
-    public Diary toEntity(String imageUrl) {
+    public Diary toEntity(String imageUrl, User user) {
         return Diary.builder()
-                .content(content)
                 .imageUrl(imageUrl)
+                .content(content)
+                .user(user)
                 .build();
     }
 }

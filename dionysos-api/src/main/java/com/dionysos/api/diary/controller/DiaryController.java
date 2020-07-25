@@ -27,23 +27,24 @@ public class DiaryController {
     private final UserService userService;
     private final DiaryService diaryService;
 
-//    @GetMapping("")
-//    public ResponseEntity<List<Diary>> diaryList() {
-//        User user = userService.getFromUid();
-//        List<Diary> diaryList = (List<Diary>) diaryService.findAll();
-//        return new ResponseEntity<List<Diary>>(diaryList, new HttpHeaders(), HttpStatus.OK);
-//    }
+    @GetMapping("")
+    public ResponseEntity<List<Diary>> diaryList() {
+        User user = userService.getFromUid();
+        List<Diary> diaryList = diaryService.getDiaries(user);
+        return new ResponseEntity<List<Diary>>(diaryList, new HttpHeaders(), HttpStatus.OK);
+    }
 
     @PostMapping("/save")
-    public ResponseEntity create(@RequestParam("data") MultipartFile multipartFile,
-                                 @RequestParam("content") String content) throws IOException {
-        diaryService.create(multipartFile, content);
+    public ResponseEntity create(RequestCreateDiaryDto dto) {
+        User user = userService.getFromUid();
+        diaryService.create(dto, user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody RequestUpdateDiaryDto requestUpdateDiaryDto) {
-        diaryService.update(id, requestUpdateDiaryDto);
+        User user = userService.getFromUid();
+        diaryService.update(id, requestUpdateDiaryDto, user);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
