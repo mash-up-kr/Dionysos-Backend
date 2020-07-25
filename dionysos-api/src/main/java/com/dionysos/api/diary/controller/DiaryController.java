@@ -5,6 +5,8 @@ import com.dionysos.api.diary.dto.RequestUpdateDiaryDto;
 import com.dionysos.api.diary.dto.ResponseDiaryDto;
 import com.dionysos.api.diary.entity.Diary;
 import com.dionysos.api.diary.service.DiaryService;
+import com.dionysos.api.user.entity.User;
+import com.dionysos.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
@@ -22,10 +24,12 @@ import java.util.List;
 @RequestMapping("/diary")
 public class DiaryController {
 
+    private final UserService userService;
     private final DiaryService diaryService;
 
     @GetMapping("")
     public ResponseEntity<List<Diary>> diaryList() {
+        User user = userService.getFromUid();
         List<Diary> diaryList = (List<Diary>) diaryService.findAll();
         return new ResponseEntity<List<Diary>>(diaryList, new HttpHeaders(), HttpStatus.OK);
     }

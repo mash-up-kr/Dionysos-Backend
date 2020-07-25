@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -50,8 +51,8 @@ public class DiaryService {
         diaryRepository.delete(diary);
     }
 
-    public Object findAll() {
-        return diaryRepository.findAll().stream()
+    public List<Diary> findAll(int user_id) {
+        return diaryRepository.findAllByUserId().stream()
                 .map(DiaryListResponseDto::new)
                 .collect(Collectors.toList());
     }

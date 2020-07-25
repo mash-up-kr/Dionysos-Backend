@@ -1,14 +1,12 @@
 package com.dionysos.api.diary.entity;
 
+import com.dionysos.api.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,6 +18,10 @@ public class Diary {
 
     private String imageUrl;
     private String content;
+
+    @OneToMany(mappedBy = "user")
+    @Column(name = "user_id")
+    private User user;
 
     @Builder
     public Diary(String imageUrl, String content) {
