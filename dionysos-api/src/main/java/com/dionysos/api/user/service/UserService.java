@@ -27,14 +27,19 @@ public class UserService {
         return userRepository.findByUid(uid).isPresent();
     }
 
-    public ResponseEntity<ResponseSignInDto> signIn() {
-        Optional<User> optionalUser = userRepository.findByUid(jwtService.getUid());
+    public ResponseEntity<ResponseSignInDto> signIn(RequestSignInDto requestSignInDto) {
+        String provider = requestSignInDto.getProvider().toString();
+        String convertedUid = provider + "_" + requestSignInDto.getUid();
+
+        Optional<User> optionalUser = userRepository.findByUid(convertedUid);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(ResponseSignInDto.builder()
-                        .nickname(user.getNickname())
+                            .uid(user.getUid())
+                            .nickname(user.getNickname())
+                            .jwt(jwtService.create(user.getUid()))
                     .build());
          } else {
             throw new NotExistUserException();
@@ -56,14 +61,14 @@ public class UserService {
 
         userRepository.save(user);
 
-        String jws = jwtService.create(convertedUid);
+        String jwt = jwtService.create(convertedUid);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseSignUpDto.builder()
                         .uid(user.getUid())
                         .nickname(user.getNickname())
                         .providerType(user.getProvider())
-                        .jws(jws)
+                        .jwt(jwt)
                         .build()
                 );
     }

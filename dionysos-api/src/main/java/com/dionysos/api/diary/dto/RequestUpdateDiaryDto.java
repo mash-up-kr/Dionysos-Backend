@@ -1,23 +1,19 @@
 package com.dionysos.api.diary.dto;
 
-import com.dionysos.api.diary.entity.Diary;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ResponseDiaryDto {
-    private Long id;
+public class RequestUpdateDiaryDto {
+
     private String imageUrl;
     private String content;
-    private String uid;
 
     @Builder
-    private ResponseDiaryDto(Long id, String imageUrl, String content, String uid) {
-        this.id = id;
+    private RequestUpdateDiaryDto(String imageUrl, String content) {
         this.imageUrl = imageUrl;
         this.content = content;
-        this.uid = uid;
     }
 }

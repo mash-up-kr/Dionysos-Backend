@@ -4,7 +4,7 @@ import com.dionysos.api.timehistory.entity.TimeHistory;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import com.dionysos.api.diary.entity.Diary;
 import java.util.List;
 
 @Entity
@@ -26,6 +26,10 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id")
+    private List<Diary> diaries;
 
     @Builder
     private User(String uid, String nickname, ProviderType provider) {

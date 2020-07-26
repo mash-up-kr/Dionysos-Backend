@@ -18,8 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<ResponseSignInDto> signIn() {
-        return userService.signIn();
+    public ResponseEntity<ResponseSignInDto> signIn(@RequestBody RequestSignInDto requestBody) {
+        return userService.signIn(requestBody);
     }
 
     @PostMapping("/signup")
