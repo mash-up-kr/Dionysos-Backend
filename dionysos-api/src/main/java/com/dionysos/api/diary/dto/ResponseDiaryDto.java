@@ -1,6 +1,5 @@
 package com.dionysos.api.diary.dto;
 
-import com.dionysos.api.diary.entity.Diary;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

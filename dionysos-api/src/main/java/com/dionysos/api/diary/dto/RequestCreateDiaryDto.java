@@ -1,12 +1,10 @@
 package com.dionysos.api.diary.dto;
 
 import com.dionysos.api.diary.entity.Diary;
-import com.dionysos.api.user.dto.ReqeustChangeNicknameDto;
 import com.dionysos.api.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter

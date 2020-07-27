@@ -3,22 +3,16 @@ package com.dionysos.api.diary.controller;
 import com.dionysos.api.diary.dto.RequestCreateDiaryDto;
 import com.dionysos.api.diary.dto.RequestUpdateDiaryDto;
 import com.dionysos.api.diary.dto.ResponseDiaryDto;
-import com.dionysos.api.diary.entity.Diary;
 import com.dionysos.api.diary.service.DiaryService;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

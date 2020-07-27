@@ -1,8 +1,9 @@
 package com.dionysos.api.user.dto;
 
 import com.dionysos.api.user.entity.ProviderType;
-import com.dionysos.api.user.entity.User;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor

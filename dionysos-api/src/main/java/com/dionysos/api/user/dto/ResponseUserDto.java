@@ -1,7 +1,6 @@
 package com.dionysos.api.user.dto;
 
 import com.dionysos.api.user.entity.ProviderType;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

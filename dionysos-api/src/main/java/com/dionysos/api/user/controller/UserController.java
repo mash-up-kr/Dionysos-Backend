@@ -1,7 +1,6 @@
 package com.dionysos.api.user.controller;
 
 import com.dionysos.api.exception.NotExistNicknameException;
-import com.dionysos.api.exception.NotExistUserException;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
