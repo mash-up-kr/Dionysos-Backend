@@ -9,9 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @NoArgsConstructor
+@Entity
 public class TimeHistory {
 
     @Id

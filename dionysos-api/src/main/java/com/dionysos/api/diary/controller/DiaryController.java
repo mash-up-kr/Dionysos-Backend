@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
 @RequestMapping("/diary")
+@RestController
 public class DiaryController {
 
     private final UserService userService;

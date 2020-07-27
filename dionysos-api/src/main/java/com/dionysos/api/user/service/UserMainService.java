@@ -5,8 +5,8 @@ import com.dionysos.api.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserMainService {
 
     private final UserService userService;

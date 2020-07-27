@@ -6,9 +6,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class User {
 
     @Id
