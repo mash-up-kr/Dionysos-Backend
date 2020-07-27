@@ -4,14 +4,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class RequestUpdateTimeHistoryDto {
 
+    private LocalDateTime historyDay;
     private Long duration;
 
     @Builder
-    public RequestUpdateTimeHistoryDto(Long duration) {
+    private RequestUpdateTimeHistoryDto(LocalDateTime historyDay, Long duration) {
+        this.historyDay = historyDay;
         this.duration = duration;
     }
 
