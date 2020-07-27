@@ -17,7 +17,7 @@ public class TimeHistoryController {
 
     private final TimeHistoryService timeHistoryService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity create(@RequestBody RequestTimeHistoryDto requestTimeHistoryDto) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

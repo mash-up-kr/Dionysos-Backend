@@ -22,7 +22,7 @@ public class DiaryController {
     private final UserService userService;
     private final DiaryService diaryService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<ResponseDiaryDto>> diaryList() {
         User user = userService.getFromUid();
         List<ResponseDiaryDto> diaryList = diaryService.findAll(user.getId());
