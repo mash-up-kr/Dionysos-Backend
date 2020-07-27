@@ -129,7 +129,8 @@ public class UserService {
     private String getConvertedUidFromUid(String uid,
                                           String provider
     ) {
-        StringBuilder convertedUid = new StringBuilder(provider);
+        StringBuilder convertedUid = new StringBuilder(256);
+        convertedUid.append(provider);
         convertedUid.append("_");
         convertedUid.append(uid);
 
