@@ -28,9 +28,9 @@ public class UserService {
     }
 
     public ResponseEntity<ResponseSignInDto> signIn(RequestSignInDto requestSignInDto) {
-        String provider = requestSignInDto.getProvider()
-                .toString();
-        String convertedUid = provider + "_" + requestSignInDto.getUid();
+        String convertedUid = getConvertedUidFromUid(requestSignInDto.getUid(),
+                requestSignInDto.getProvider().toString()
+        );
 
         Optional<User> optionalUser = userRepository.findByUid(convertedUid);
 
@@ -48,9 +48,9 @@ public class UserService {
     }
 
     public ResponseEntity<ResponseSignUpDto> signUp(RequestSignUpDto requestSignUpDto) {
-        String provider = requestSignUpDto.getProvider()
-                .toString();
-        String convertedUid = provider + "_" + requestSignUpDto.getUid();
+        String convertedUid = getConvertedUidFromUid(requestSignUpDto.getUid(),
+                requestSignUpDto.getProvider().toString()
+        );
 
         if (isExisted(convertedUid))
             throw new BadRequestException("이미 가입한 회원입니다.");
@@ -124,5 +124,15 @@ public class UserService {
         User user = userRepository.findByUid(uid)
                 .orElseThrow(NotExistUserException::new);
         userRepository.delete(user);
+    }
+
+    private String getConvertedUidFromUid(String uid,
+                                          String provider
+    ) {
+        StringBuilder convertedUid = new StringBuilder(provider);
+        convertedUid.append("_");
+        convertedUid.append(uid);
+
+        return convertedUid.toString();
     }
 }
