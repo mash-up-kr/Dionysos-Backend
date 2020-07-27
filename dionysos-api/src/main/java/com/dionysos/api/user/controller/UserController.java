@@ -33,7 +33,8 @@ public class UserController {
             throw new NotExistNicknameException();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .build();
     }
 
     @GetMapping("/my")
@@ -57,7 +58,8 @@ public class UserController {
     @DeleteMapping("/signout")
     public ResponseEntity signOut() {
         userService.signOut();
-        return ResponseEntity.status(HttpStatus.GONE).build();
+        return ResponseEntity.status(HttpStatus.GONE)
+                .build();
     }
 
 }

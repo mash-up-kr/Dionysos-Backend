@@ -38,14 +38,16 @@ public class DiaryController {
                 .build();
         User user = userService.getFromUid();
         diaryService.create(dto, user);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody RequestUpdateDiaryDto requestUpdateDiaryDto) {
         User user = userService.getFromUid();
         diaryService.update(id, requestUpdateDiaryDto, user.getId());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
     @GetMapping("/{id}")
@@ -60,7 +62,8 @@ public class DiaryController {
     public ResponseEntity delete(@PathVariable Long id) {
         User user = userService.getFromUid();
         diaryService.delete(id, user.getId());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
 }

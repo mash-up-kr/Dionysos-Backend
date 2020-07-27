@@ -19,7 +19,8 @@ public class TimeHistoryController {
 
     @PostMapping
     public ResponseEntity create(@RequestBody RequestTimeHistoryDto requestTimeHistoryDto) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
 }

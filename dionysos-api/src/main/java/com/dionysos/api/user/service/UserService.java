@@ -28,7 +28,8 @@ public class UserService {
     }
 
     public ResponseEntity<ResponseSignInDto> signIn(RequestSignInDto requestSignInDto) {
-        String provider = requestSignInDto.getProvider().toString();
+        String provider = requestSignInDto.getProvider()
+                .toString();
         String convertedUid = provider + "_" + requestSignInDto.getUid();
 
         Optional<User> optionalUser = userRepository.findByUid(convertedUid);
@@ -47,7 +48,8 @@ public class UserService {
     }
 
     public ResponseEntity<ResponseSignUpDto> signUp(RequestSignUpDto requestSignUpDto) {
-        String provider = requestSignUpDto.getProvider().toString();
+        String provider = requestSignUpDto.getProvider()
+                .toString();
         String convertedUid = provider + "_" + requestSignUpDto.getUid();
 
         if (isExisted(convertedUid))
@@ -91,23 +93,27 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public boolean existNickname(RequestNicknameCheckDto requestNicknameCheckDto) {
-        return userRepository.findByNickname(requestNicknameCheckDto.getNickname()).isPresent();
+        return userRepository.findByNickname(requestNicknameCheckDto.getNickname())
+                .isPresent();
     }
 
     @Transactional(readOnly = true)
     public User getFromUid(String uid) {
-        return userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
+        return userRepository.findByUid(uid)
+                .orElseThrow(NotExistUserException::new);
     }
 
     @Transactional(readOnly = true)
     public User getFromUid() {
         String uid = jwtService.getUid();
-        return userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
+        return userRepository.findByUid(uid)
+                .orElseThrow(NotExistUserException::new);
 
     }
 
     public User setNickname(RequestSignUpDto requestUserDto) {
-        User user = userRepository.findByUid(requestUserDto.getUid()).orElseThrow(NotExistUserException::new);
+        User user = userRepository.findByUid(requestUserDto.getUid())
+                .orElseThrow(NotExistUserException::new);
         user.changeNickname(requestUserDto.getNickname());
         userRepository.save(user);
         return user;
@@ -115,7 +121,8 @@ public class UserService {
 
     public void signOut() {
         String uid = jwtService.getUid();
-        User user = userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
+        User user = userRepository.findByUid(uid)
+                .orElseThrow(NotExistUserException::new);
         userRepository.delete(user);
     }
 }

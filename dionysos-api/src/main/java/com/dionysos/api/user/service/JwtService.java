@@ -57,7 +57,9 @@ public class JwtService {
 
         Jws<Claims> jwsClaims = getJwsClaims(jws);
 
-        return jwsClaims.getBody().get(key).toString();
+        return jwsClaims.getBody()
+                .get(key)
+                .toString();
     }
 
     private Jws<Claims> getJwsClaims(String jws) {

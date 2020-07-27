@@ -72,7 +72,8 @@ public class DiaryService {
         }
 
         return ResponseDiaryDto.builder()
-                .uid(diary.getUser().getUid())
+                .uid(diary.getUser()
+                        .getUid())
                 .imageUrl(diary.getImageUrl())
                 .id(diary.getId())
                 .content(diary.getContent())
