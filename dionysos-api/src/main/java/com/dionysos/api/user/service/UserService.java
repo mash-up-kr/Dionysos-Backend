@@ -69,7 +69,7 @@ public class UserService {
                 .body(ResponseSignUpDto.builder()
                         .uid(user.getUid())
                         .nickname(user.getNickname())
-                        .providerType(user.getProvider())
+                        .provider(user.getProvider())
                         .jwt(jwt)
                         .build()
                 );
@@ -84,7 +84,7 @@ public class UserService {
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
-                .providerType(user.getProvider())
+                .provider(user.getProvider())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)

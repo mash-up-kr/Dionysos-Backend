@@ -43,7 +43,7 @@ public class UserController {
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
-                .providerType(user.getProvider())
+                .provider(user.getProvider())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
