@@ -13,7 +13,10 @@ public class RequestSignUpDto {
     private ProviderType provider;
 
     @Builder
-    private RequestSignUpDto(String uid, String nickname, ProviderType provider) {
+    private RequestSignUpDto(String uid,
+                             String nickname,
+                             ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
         this.provider = provider;

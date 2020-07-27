@@ -24,27 +24,45 @@ public class DiaryService {
 
     private static final String DIRECTORY_NAME = "diary";
 
-    public void create(RequestCreateDiaryDto dto, User user) {
-        String imageUrl = s3Uploader.upload(dto.getUploadFile(), DIRECTORY_NAME);
-        Diary diary = dto.toEntity(imageUrl, user);
+    public void create(RequestCreateDiaryDto dto,
+                       User user
+    ) {
+        String imageUrl = s3Uploader.upload(dto.getUploadFile(),
+                DIRECTORY_NAME
+        );
+        Diary diary = dto.toEntity(imageUrl,
+                user
+        );
         diaryRepository.save(diary);
     }
 
-    public void update(Long id, RequestUpdateDiaryDto requestUpdateDiaryDto, Long user_id) {
-        Diary diary = diaryRepository.findById(id).orElseThrow(() -> new BadRequestException("해당 id가 없습니다.id= "+ id));
+    public void update(Long id,
+                       RequestUpdateDiaryDto requestUpdateDiaryDto,
+                       Long user_id
+    ) {
+        Diary diary = diaryRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("해당 id가 없습니다.id= " + id));
 
-        if (diary.getUser().getId() != user_id) {
+        if (diary.getUser()
+                .getId() != user_id) {
             throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
         }
 
-        diary.update(requestUpdateDiaryDto.getImageUrl(), requestUpdateDiaryDto.getContent());
+        diary.update(requestUpdateDiaryDto.getImageUrl(),
+                requestUpdateDiaryDto.getContent()
+        );
     }
 
     @Transactional
-    public void delete(Long id, Long user_id) {
-        Diary diary = diaryRepository.findById(id).orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= "+ id)));
+    public void delete(Long id,
+                       Long user_id
+    ) {
+        Diary diary = diaryRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(("해당 id가 없습니다.id= " + id)));
 
-        if (diary.getUser().getId() != user_id) {
+        if (diary.getUser()
+                .getId() != user_id
+        ) {
             throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
         }
 
@@ -53,7 +71,8 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<ResponseDiaryDto> findAll(Long user_id) {
-        return diaryRepository.findAllByUserId(user_id).stream()
+        return diaryRepository.findAllByUserId(user_id)
+                .stream()
                 .map(diary -> ResponseDiaryDto.builder()
                         .id(diary.getId())
                         .content(diary.getContent())
@@ -64,10 +83,15 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDiaryDto findById(Long id, Long user_id) {
-        Diary diary = diaryRepository.findById(id).orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= "+ id)));
+    public ResponseDiaryDto findById(Long id,
+                                     Long user_id
+    ) {
+        Diary diary = diaryRepository.findById(id)
+                .orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= " + id)));
 
-        if (diary.getUser().getId() != user_id) {
+        if (diary.getUser()
+                .getId() != user_id
+        ) {
             throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
         }
 

@@ -9,14 +9,19 @@ import java.time.LocalDateTime;
 @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 public class UnAuthorizedException extends BaseException {
     public UnAuthorizedException(String msg) {
-        this(HttpStatus.UNAUTHORIZED.value(), msg);
+        this(HttpStatus.UNAUTHORIZED.value(),
+                msg
+        );
     }
 
-    public UnAuthorizedException(int code, String msg) {
+    public UnAuthorizedException(int code,
+                                 String msg
+    ) {
         super(ErrorModel.builder()
                 .code(code)
                 .msg(msg)
                 .timestamp(LocalDateTime.now())
-                .build());
+                .build()
+        );
     }
 }

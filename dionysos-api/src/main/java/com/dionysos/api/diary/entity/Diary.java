@@ -24,13 +24,18 @@ public class Diary {
     private User user;
 
     @Builder
-    private Diary(String imageUrl, String content, User user) {
+    private Diary(String imageUrl,
+                  String content,
+                  User user
+    ) {
         this.imageUrl = imageUrl;
         this.content = content;
         this.user = user;
     }
 
-    public void update(String imageUrl, String content) {
+    public void update(String imageUrl,
+                       String content
+    ) {
         this.imageUrl = imageUrl;
         this.content = content;
     }

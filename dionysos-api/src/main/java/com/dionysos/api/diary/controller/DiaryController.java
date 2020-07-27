@@ -31,21 +31,30 @@ public class DiaryController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity create(@RequestParam(value = "data") MultipartFile data, @RequestParam(value = "content") String content) {
+    public ResponseEntity create(@RequestParam(value = "data") MultipartFile data,
+                                 @RequestParam(value = "content") String content
+    ) {
         RequestCreateDiaryDto dto = RequestCreateDiaryDto.builder()
                 .content(content)
                 .uploadFile(data)
                 .build();
         User user = userService.getFromUid();
-        diaryService.create(dto, user);
+        diaryService.create(dto,
+                user
+        );
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody RequestUpdateDiaryDto requestUpdateDiaryDto) {
+    public ResponseEntity update(@PathVariable Long id,
+                                 @RequestBody RequestUpdateDiaryDto requestUpdateDiaryDto
+    ) {
         User user = userService.getFromUid();
-        diaryService.update(id, requestUpdateDiaryDto, user.getId());
+        diaryService.update(id,
+                requestUpdateDiaryDto,
+                user.getId()
+        );
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }
@@ -53,15 +62,21 @@ public class DiaryController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDiaryDto> findById(@PathVariable Long id) {
         User user = userService.getFromUid();
-        ResponseDiaryDto dto = diaryService.findById(id, user.getId());
+        ResponseDiaryDto dto = diaryService.findById(id,
+                user.getId()
+        );
 
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(dto,
+                HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         User user = userService.getFromUid();
-        diaryService.delete(id, user.getId());
+        diaryService.delete(id,
+                user.getId()
+        );
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }

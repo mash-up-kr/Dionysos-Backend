@@ -82,7 +82,9 @@ public class JwtService {
         try {
             key = secretKey.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            log.debug("generate key fail : {}", e);
+            log.debug("generate key fail : {}",
+                    e
+            );
         }
 
         return key;

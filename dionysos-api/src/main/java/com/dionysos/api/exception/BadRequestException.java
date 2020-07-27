@@ -14,10 +14,14 @@ public class BadRequestException extends BaseException {
     }
 
     public BadRequestException(String msg) {
-        this(HttpStatus.BAD_REQUEST.value(), msg);
+        this(HttpStatus.BAD_REQUEST.value(),
+                msg
+        );
     }
 
-    public BadRequestException(int code, String msg) {
+    public BadRequestException(int code,
+                               String msg
+    ) {
         super(ErrorModel.builder()
                 .code(code)
                 .msg(msg)

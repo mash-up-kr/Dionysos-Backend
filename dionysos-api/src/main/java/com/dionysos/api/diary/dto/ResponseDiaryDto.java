@@ -13,7 +13,11 @@ public class ResponseDiaryDto {
     private String uid;
 
     @Builder
-    private ResponseDiaryDto(Long id, String imageUrl, String content, String uid) {
+    private ResponseDiaryDto(Long id,
+                             String imageUrl,
+                             String content,
+                             String uid
+    ) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.content = content;

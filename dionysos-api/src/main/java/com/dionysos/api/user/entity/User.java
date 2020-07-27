@@ -28,7 +28,10 @@ public class User {
     private List<Diary> diaries;
 
     @Builder
-    private User(String uid, String nickname, ProviderType provider) {
+    private User(String uid,
+                 String nickname,
+                 ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
         this.provider = provider;

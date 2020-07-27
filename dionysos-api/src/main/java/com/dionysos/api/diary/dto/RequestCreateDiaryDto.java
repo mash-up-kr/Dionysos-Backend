@@ -14,12 +14,16 @@ public class RequestCreateDiaryDto {
     private MultipartFile uploadFile;
 
     @Builder
-    private RequestCreateDiaryDto(String content, MultipartFile uploadFile) {
+    private RequestCreateDiaryDto(String content,
+                                  MultipartFile uploadFile
+    ) {
         this.content = content;
         this.uploadFile = uploadFile;
     }
 
-    public Diary toEntity(String imageUrl, User user) {
+    public Diary toEntity(String imageUrl,
+                          User user
+    ) {
         return Diary.builder()
                 .imageUrl(imageUrl)
                 .content(content)

@@ -13,14 +13,19 @@ public class NotExistNicknameException extends BaseException {
     }
 
     public NotExistNicknameException(String msg) {
-        this(HttpStatus.FOUND.value(), msg);
+        this(HttpStatus.FOUND.value(),
+                msg
+        );
     }
 
-    public NotExistNicknameException(int code, String msg) {
+    public NotExistNicknameException(int code,
+                                     String msg
+    ) {
         super(ErrorModel.builder()
                 .code(code)
                 .msg(msg)
                 .timestamp(LocalDateTime.now())
-                .build());
+                .build()
+        );
     }
 }

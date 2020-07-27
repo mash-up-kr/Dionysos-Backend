@@ -14,7 +14,9 @@ public class DionysosExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ErrorModel> handleException(BaseException baseException) {
         ErrorModel errorModel = baseException.error;
-        log.error("Rest API Error : {}", errorModel.getMsg());
+        log.error("Rest API Error : {}",
+                errorModel.getMsg()
+        );
 
         switch (errorModel.getCode()) {
             case 400:

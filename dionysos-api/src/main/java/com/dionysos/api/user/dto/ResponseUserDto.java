@@ -13,7 +13,10 @@ public class ResponseUserDto {
     private ProviderType provider;
 
     @Builder
-    private ResponseUserDto(String uid, String nickname, ProviderType provider) {
+    private ResponseUserDto(String uid,
+                            String nickname,
+                            ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
         this.provider = provider;

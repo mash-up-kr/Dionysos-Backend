@@ -24,7 +24,9 @@ public class TimeHistory {
     private Long duration;
 
     @Builder
-    private TimeHistory(LocalDateTime historyDay, Long duration) {
+    private TimeHistory(LocalDateTime historyDay,
+                        Long duration
+    ) {
         this.historyDay = historyDay;
         this.duration = duration;
     }
