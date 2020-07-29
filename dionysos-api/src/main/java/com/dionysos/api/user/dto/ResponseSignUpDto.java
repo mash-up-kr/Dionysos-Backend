@@ -10,14 +10,18 @@ import lombok.NoArgsConstructor;
 public class ResponseSignUpDto {
     private String uid;
     private String nickname;
-    private ProviderType providerType;
     private String jwt;
+    private ProviderType provider;
 
     @Builder
-    private ResponseSignUpDto(String uid, String nickname, String jwt, ProviderType providerType) {
+    private ResponseSignUpDto(String uid,
+                              String nickname,
+                              String jwt,
+                              ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
         this.jwt = jwt;
-        this.providerType = providerType;
+        this.provider = provider;
     }
 }

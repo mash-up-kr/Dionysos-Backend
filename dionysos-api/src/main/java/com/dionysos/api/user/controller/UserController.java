@@ -1,7 +1,6 @@
 package com.dionysos.api.user.controller;
 
 import com.dionysos.api.exception.NotExistNicknameException;
-import com.dionysos.api.exception.NotExistUserException;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
@@ -10,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -34,7 +33,8 @@ public class UserController {
             throw new NotExistNicknameException();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .build();
     }
 
     @GetMapping("/my")
@@ -43,7 +43,7 @@ public class UserController {
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
-                .providerType(user.getProvider())
+                .provider(user.getProvider())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -58,7 +58,8 @@ public class UserController {
     @DeleteMapping("/signout")
     public ResponseEntity signOut() {
         userService.signOut();
-        return ResponseEntity.status(HttpStatus.GONE).build();
+        return ResponseEntity.status(HttpStatus.GONE)
+                .build();
     }
 
 }

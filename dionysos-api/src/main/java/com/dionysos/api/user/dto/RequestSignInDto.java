@@ -12,7 +12,9 @@ public class RequestSignInDto {
     private ProviderType provider;
 
     @Builder
-    private RequestSignInDto(String uid, ProviderType provider) {
+    private RequestSignInDto(String uid,
+                             ProviderType provider
+    ) {
         this.uid = uid;
         this.provider = provider;
     }

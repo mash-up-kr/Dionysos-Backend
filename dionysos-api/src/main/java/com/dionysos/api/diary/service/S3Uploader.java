@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,13 +23,21 @@ public class S3Uploader implements FileUploader {
     private String bucket;
 
     @Override
-    public String upload(MultipartFile uploadFile, String dirName) {
-        String fileName = toFileName(dirName, uploadFile);
+    public String upload(MultipartFile uploadFile,
+                         String dirName
+    ) {
+        String fileName = toFileName(dirName,
+                uploadFile
+        );
 
-        return putS3(uploadFile, fileName);
+        return putS3(uploadFile,
+                fileName
+        );
     }
 
-    private String toFileName(String dirName, MultipartFile uploadFile) {
+    private String toFileName(String dirName,
+                              MultipartFile uploadFile
+    ) {
         StringBuilder sb = new StringBuilder();
         sb.append(dirName);
         sb.append("/");

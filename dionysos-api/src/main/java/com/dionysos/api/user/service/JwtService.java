@@ -57,7 +57,9 @@ public class JwtService {
 
         Jws<Claims> jwsClaims = getJwsClaims(jws);
 
-        return jwsClaims.getBody().get(key).toString();
+        return jwsClaims.getBody()
+                .get(key)
+                .toString();
     }
 
     private Jws<Claims> getJwsClaims(String jws) {
@@ -80,7 +82,9 @@ public class JwtService {
         try {
             key = secretKey.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            log.debug("generate key fail : {}", e);
+            log.debug("generate key fail : {}",
+                    e
+            );
         }
 
         return key;

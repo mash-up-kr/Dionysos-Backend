@@ -2,7 +2,7 @@ package com.dionysos.api.timehistory.controller;
 
 import com.dionysos.api.timehistory.dto.RequestTimeHistoryDto;
 import com.dionysos.api.timehistory.service.TimeHistoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,16 +10,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RequiredArgsConstructor
 @RequestMapping("/time-history")
+@RestController
 public class TimeHistoryController {
 
-    @Autowired
-    private TimeHistoryService timeHistoryService;
+    private final TimeHistoryService timeHistoryService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity create(@RequestBody RequestTimeHistoryDto requestTimeHistoryDto) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
 }

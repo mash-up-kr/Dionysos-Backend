@@ -14,15 +14,20 @@ public class NotExistUserException extends BaseException {
     }
 
     public NotExistUserException(String msg) {
-        this(HttpStatus.NOT_FOUND.value(), msg);
+        this(HttpStatus.NOT_FOUND.value(),
+                msg
+        );
     }
 
-    public NotExistUserException(int code, String msg) {
+    public NotExistUserException(int code,
+                                 String msg
+    ) {
         super(ErrorModel.builder()
                 .code(code)
                 .msg(msg)
                 .timestamp(LocalDateTime.now())
-                .build());
+                .build()
+        );
     }
 
 }

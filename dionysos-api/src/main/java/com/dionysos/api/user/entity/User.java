@@ -4,12 +4,11 @@ import com.dionysos.api.diary.entity.Diary;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class User {
 
     @Id
@@ -29,7 +28,10 @@ public class User {
     private List<Diary> diaries;
 
     @Builder
-    private User(String uid, String nickname, ProviderType provider) {
+    private User(String uid,
+                 String nickname,
+                 ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
         this.provider = provider;
