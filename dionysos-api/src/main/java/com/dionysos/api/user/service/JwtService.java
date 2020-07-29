@@ -1,10 +1,7 @@
 package com.dionysos.api.user.service;
 
 import com.dionysos.api.exception.UnAuthorizedException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +12,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
+import java.util.Calendar;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -26,20 +25,34 @@ public class JwtService {
     private static final String HEADER_AUTH = "Authorization";
 
     public String create(String uid) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,
+                30
+        );
+
         Key key = Keys.hmacShaKeyFor(generateKey());
+        Claims claims = Jwts.claims()
+                .setSubject("user")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(cal.getTimeInMillis()));
+
+        claims.put("uid", uid);
 
         String jws = Jwts.builder()
-                        .setHeaderParam("typ", "JWT")
-                        .setSubject("user")
-                        .claim("uid", uid)
-                        .signWith(key, SignatureAlgorithm.HS256)
-                        .compact();
+                .setHeaderParam("typ",
+                        "JWT"
+                ).setClaims(claims)
+                .signWith(key,
+                        SignatureAlgorithm.HS256
+                ).compact();
 
         return jws;
     }
 
     public boolean ValidateUser(String jws) {
-        log.info("validateUser jws : {} ", jws);
+        log.info("validateUser jws : {} ",
+                jws
+        );
         getJwsClaims(jws);
 
         return true;
@@ -69,7 +82,10 @@ public class JwtService {
             claims = Jwts.parser()
                     .setSigningKey(generateKey())
                     .parseClaimsJws(jws);
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e) {
+            log.error("Token expired : " + jws);
+            throw new UnAuthorizedException("발급된 토큰이 만료됐습니다.");
+        } catch (JwtException e) {
             throw new UnAuthorizedException("올바르지 않은 계정입니다.");
         }
 
