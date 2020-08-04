@@ -19,7 +19,7 @@ public class TimeHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime historyDay;
     private Long duration;
     private boolean isRunning;
@@ -30,19 +30,25 @@ public class TimeHistory {
     public User user;
 
     @Builder
-    private TimeHistory(LocalDateTime historyDay, User user) {
+    private TimeHistory(LocalDateTime historyDay,
+                        User user,
+                        Long duration
+    ) {
         this.historyDay = historyDay;
         this.user = user;
+        this.duration = duration;
         this.isRunning = true;
     }
 
-    public void update(Long duration, LocalDateTime historyDay) {
+    public void update(Long duration,
+                       LocalDateTime historyDay
+    ) {
         this.duration = duration;
         this.historyDay = historyDay;
         this.isRunning = !this.isRunning;
     }
 
-    public void updateTimer(Long duration) {
-        this.duration = duration;
+    public void addDayOfMonth() {
+        this.historyDay = historyDay.plusDays(1);
     }
 }

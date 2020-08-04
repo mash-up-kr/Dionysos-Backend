@@ -1,10 +1,7 @@
 package com.dionysos.api.timehistory.controller;
 
 import com.dionysos.api.timehistory.dto.RequestSaveTimeHistoryDto;
-import com.dionysos.api.timehistory.dto.RequestUpdateTimeHistoryDto;
-import com.dionysos.api.timehistory.dto.RequestUpdateTimerTimeHistoryDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
-import com.dionysos.api.timehistory.entity.TimeHistory;
 import com.dionysos.api.timehistory.service.TimeHistoryService;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
@@ -22,24 +19,9 @@ public class TimeHistoryController {
     private final UserService userService;
 
     @PostMapping("")
-    public ResponseEntity create(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) throws Exception {
+    public ResponseEntity createOrUpdate(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) throws Exception {
         User user = userService.getFromUid();
-        timeHistoryService.create(requestSaveTimeHistoryDto, user);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    //Put -> 사용자가 일시정지/종료/재시작 했을 경우
-    @PutMapping("")
-    public ResponseEntity update(@RequestBody RequestUpdateTimeHistoryDto requestUpdateTimeHistoryDto) {
-        User user = userService.getFromUid();
-        timeHistoryService.update(requestUpdateTimeHistoryDto, user);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @PutMapping("/timer")
-    public ResponseEntity updateTimer(@RequestBody RequestUpdateTimerTimeHistoryDto requestUpdateTimerTimeHistoryDto) {
-        User user = userService.getFromUid();
-        timeHistoryService.updateTimer(requestUpdateTimerTimeHistoryDto, user);
+        timeHistoryService.createOrUpdate(requestSaveTimeHistoryDto, user);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
