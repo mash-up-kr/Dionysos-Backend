@@ -1,6 +1,7 @@
 package com.dionysos.api.timehistory.controller;
 
 import com.dionysos.api.timehistory.dto.RequestSaveTimeHistoryDto;
+import com.dionysos.api.timehistory.dto.ResponseRankingDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
 import com.dionysos.api.timehistory.service.TimeHistoryService;
 import com.dionysos.api.user.entity.User;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,5 +35,24 @@ public class TimeHistoryController {
         User user = userService.getFromUid();
         ResponseTimeHistoryDto dto = timeHistoryService.findByUid(user);
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("/ranking/day")
+    public ResponseEntity<List<ResponseRankingDto>> dayRanking() {
+        User user = userService.getFromUid();
+        List<ResponseRankingDto> dtos = timeHistoryService.dayRanking();
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/ranking/weekly")
+    public ResponseEntity<List<ResponseRankingDto>> weekRanking() {
+        List<ResponseRankingDto> dtos = timeHistoryService.weekRanking();
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/ranking/monthly")
+    public ResponseEntity<List<ResponseRankingDto>> monthRanking() {
+        List<ResponseRankingDto> dtos = timeHistoryService.monthRanking();
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 }

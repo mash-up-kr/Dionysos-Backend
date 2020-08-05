@@ -1,15 +1,23 @@
 package com.dionysos.api.timehistory.service;
 
 import com.dionysos.api.timehistory.dto.RequestSaveTimeHistoryDto;
+import com.dionysos.api.timehistory.dto.ResponseRankingDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
 import com.dionysos.api.timehistory.entity.TimeHistory;
 import com.dionysos.api.timehistory.repository.TimeHistoryRepository;
 import com.dionysos.api.user.entity.User;
+import com.dionysos.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -17,6 +25,7 @@ import java.time.LocalDateTime;
 public class TimeHistoryService {
 
     private final TimeHistoryRepository timeHistoryRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void createOrUpdate(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
@@ -24,7 +33,8 @@ public class TimeHistoryService {
     ) {
         if (timeHistoryRepository.getTimeHistory(user.getId(),
                 getStandardTime(requestSaveTimeHistoryDto.getHistoryDay()),
-                requestSaveTimeHistoryDto.getHistoryDay()).isPresent()
+                requestSaveTimeHistoryDto.getHistoryDay())
+                .isPresent()
         ) {
             //재시작, 일시정지(=중지)
             update(requestSaveTimeHistoryDto, user);
@@ -130,5 +140,63 @@ public class TimeHistoryService {
         int countedSecond = historyDay.getSecond();
 
         return (long) countedHour + countedMinute + countedSecond;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseRankingDto> dayRanking() {
+
+        return timeHistoryRepository.dayRanking(getStandardTime(LocalDateTime.now()), LocalDateTime.now())
+                .stream()
+                .map(ResponseRankingDto::new)
+                .collect(Collectors.toList());
+    }
+
+    //일주일 랭킹은 월-일
+    @Transactional(readOnly = true)
+    public List<ResponseRankingDto> weekRanking() {
+
+        System.out.println(findWklyStndTms());
+        System.out.println(timeHistoryRepository.dayRanking(findWklyStndTms(), LocalDateTime.now()));
+
+        return timeHistoryRepository.weeklyMonthlyRanking(findWklyStndTms(), LocalDateTime.now())
+                .stream()
+                .map(ResponseRankingDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseRankingDto> monthRanking() {
+
+        return timeHistoryRepository.weeklyMonthlyRanking(findMnlyStndTms(), LocalDateTime.now())
+                .stream()
+                .map(ResponseRankingDto::new)
+                .collect(Collectors.toList());
+    }
+
+    private LocalDateTime findWklyStndTms() {
+        LocalDateTime time = LocalDate.now().atTime(06, 00, 00);
+
+        LocalTime baseTime = LocalTime.of(6, 0,0);
+        if(LocalDateTime.now().getDayOfWeek().equals("MONDAY") && LocalTime.now().isAfter(baseTime)) { }
+        else {
+            time = time.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        }
+
+        return time;
+    }
+
+
+    private LocalDateTime findMnlyStndTms() {
+        LocalDateTime time = LocalDate.now().atTime(06, 00, 00);
+
+        LocalTime baseTime = LocalTime.of(6, 0,0);
+        if(LocalDateTime.now().getDayOfMonth()==1 && LocalTime.now().isBefore(baseTime)) {
+            time = time.minusMonths(1);
+        }
+        else {
+            time = time.with(TemporalAdjusters.firstDayOfMonth());
+        }
+
+        return time;
     }
 }
