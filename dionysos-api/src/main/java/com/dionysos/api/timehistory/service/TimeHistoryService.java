@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class TimeHistoryService {
 
     private final TimeHistoryRepository timeHistoryRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public void createOrUpdate(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
@@ -145,7 +144,8 @@ public class TimeHistoryService {
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> dayRanking() {
 
-        return timeHistoryRepository.dayRanking(getStandardTime(LocalDateTime.now()), LocalDateTime.now())
+        return timeHistoryRepository.dayRanking(getStandardTime(LocalDateTime.now()),
+                LocalDateTime.now())
                 .stream()
                 .map(ResponseRankingDto::new)
                 .collect(Collectors.toList());
@@ -156,9 +156,11 @@ public class TimeHistoryService {
     public List<ResponseRankingDto> weekRanking() {
 
         System.out.println(findWklyStndTms());
-        System.out.println(timeHistoryRepository.dayRanking(findWklyStndTms(), LocalDateTime.now()));
+        System.out.println(timeHistoryRepository.dayRanking(findWklyStndTms(),
+                LocalDateTime.now()));
 
-        return timeHistoryRepository.weeklyMonthlyRanking(findWklyStndTms(), LocalDateTime.now())
+        return timeHistoryRepository.weeklyMonthlyRanking(findWklyStndTms(),
+                LocalDateTime.now())
                 .stream()
                 .map(ResponseRankingDto::new)
                 .collect(Collectors.toList());
@@ -167,7 +169,8 @@ public class TimeHistoryService {
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> monthRanking() {
 
-        return timeHistoryRepository.weeklyMonthlyRanking(findMnlyStndTms(), LocalDateTime.now())
+        return timeHistoryRepository.weeklyMonthlyRanking(findMnlyStndTms(),
+                LocalDateTime.now())
                 .stream()
                 .map(ResponseRankingDto::new)
                 .collect(Collectors.toList());
@@ -177,7 +180,8 @@ public class TimeHistoryService {
         LocalDateTime time = LocalDate.now().atTime(06, 00, 00);
 
         LocalTime baseTime = LocalTime.of(6, 0,0);
-        if(LocalDateTime.now().getDayOfWeek().equals("MONDAY") && LocalTime.now().isAfter(baseTime)) { }
+        if(LocalDateTime.now().getDayOfWeek().equals("MONDAY")
+                && LocalTime.now().isAfter(baseTime)) { }
         else {
             time = time.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
         }
@@ -190,7 +194,8 @@ public class TimeHistoryService {
         LocalDateTime time = LocalDate.now().atTime(06, 00, 00);
 
         LocalTime baseTime = LocalTime.of(6, 0,0);
-        if(LocalDateTime.now().getDayOfMonth()==1 && LocalTime.now().isBefore(baseTime)) {
+        if(LocalDateTime.now().getDayOfMonth()==1
+                && LocalTime.now().isBefore(baseTime)) {
             time = time.minusMonths(1);
         }
         else {
