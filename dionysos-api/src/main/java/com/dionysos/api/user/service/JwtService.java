@@ -1,6 +1,6 @@
 package com.dionysos.api.user.service;
 
-import com.dionysos.api.exception.UnAuthorizedException;
+import com.dionysos.api.user.exception.UnAuthorizedException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
-package com.dionysos.api.common;
+package com.dionysos.api.common.response;
 
-import com.dionysos.api.common.utils.DionysosAPIResponseCode;
+import com.dionysos.api.common.response.code.DionysosAPIResponseCode;
 import lombok.Builder;
 import lombok.Getter;
 

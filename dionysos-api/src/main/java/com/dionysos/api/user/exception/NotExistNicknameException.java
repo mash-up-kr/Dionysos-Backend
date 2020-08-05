@@ -1,5 +1,6 @@
-package com.dionysos.api.exception;
+package com.dionysos.api.user.exception;
 
+import com.dionysos.api.common.exception.BaseException;
 import com.dionysos.api.common.model.ErrorModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

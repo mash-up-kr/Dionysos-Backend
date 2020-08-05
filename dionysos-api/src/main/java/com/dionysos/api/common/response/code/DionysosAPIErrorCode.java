@@ -1,4 +1,4 @@
-package com.dionysos.api.common.utils;
+package com.dionysos.api.common.response.code;
 
 import lombok.Getter;
 

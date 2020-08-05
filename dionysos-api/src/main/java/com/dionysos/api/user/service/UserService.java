@@ -1,7 +1,7 @@
 package com.dionysos.api.user.service;
 
-import com.dionysos.api.exception.BadRequestException;
-import com.dionysos.api.exception.NotExistUserException;
+import com.dionysos.api.common.exception.BadRequestException;
+import com.dionysos.api.user.exception.NotExistUserException;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.repository.UserRepository;

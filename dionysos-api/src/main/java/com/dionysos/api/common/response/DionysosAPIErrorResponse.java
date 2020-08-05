@@ -1,7 +1,7 @@
-package com.dionysos.api.common;
+package com.dionysos.api.common.response;
 
 import com.dionysos.api.common.model.ErrorModel;
-import com.dionysos.api.common.utils.DionysosAPIErrorCode;
+import com.dionysos.api.common.response.code.DionysosAPIErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 

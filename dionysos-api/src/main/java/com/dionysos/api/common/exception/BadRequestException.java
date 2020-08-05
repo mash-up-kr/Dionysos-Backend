@@ -1,4 +1,4 @@
-package com.dionysos.api.exception;
+package com.dionysos.api.common.exception;
 
 import com.dionysos.api.common.model.ErrorModel;
 import org.springframework.http.HttpStatus;
