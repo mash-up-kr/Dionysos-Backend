@@ -1,6 +1,6 @@
 package com.dionysos.api.exception;
 
-import com.dionysos.api.exception.model.ErrorModel;
+import com.dionysos.api.common.model.ErrorModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class DionysosExceptionHandler {
     public ResponseEntity<ErrorModel> handleException(BaseException baseException) {
         ErrorModel errorModel = baseException.error;
         log.error("Rest API Error : {}",
-                errorModel.getMsg()
+                errorModel.getMessage()
         );
 
         switch (errorModel.getCode()) {

@@ -1,6 +1,6 @@
 package com.dionysos.api.exception;
 
-import com.dionysos.api.exception.model.ErrorModel;
+import com.dionysos.api.common.model.ErrorModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -13,18 +13,18 @@ public class BadRequestException extends BaseException {
         this(HttpStatus.BAD_REQUEST.getReasonPhrase());
     }
 
-    public BadRequestException(String msg) {
+    public BadRequestException(String message) {
         this(HttpStatus.BAD_REQUEST.value(),
-                msg
+                message
         );
     }
 
     public BadRequestException(int code,
-                               String msg
+                               String message
     ) {
         super(ErrorModel.builder()
                 .code(code)
-                .msg(msg)
+                .message(message)
                 .timestamp(LocalDateTime.now())
                 .build()
         );

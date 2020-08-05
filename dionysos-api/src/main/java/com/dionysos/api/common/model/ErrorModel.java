@@ -1,4 +1,4 @@
-package com.dionysos.api.exception.model;
+package com.dionysos.api.common.model;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,15 +8,16 @@ import java.time.LocalDateTime;
 @Getter
 public class ErrorModel {
     private int code;
-    private String msg;
+    private String message;
     private LocalDateTime timestamp;
 
     @Builder
     private ErrorModel(int code,
-                       String msg,
-                       LocalDateTime timestamp) {
+                       String message,
+                       LocalDateTime timestamp
+    ) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
         this.timestamp = timestamp;
     }
 }

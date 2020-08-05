@@ -1,10 +1,10 @@
 package com.dionysos.api.common;
 
+import com.dionysos.api.common.utils.DionysosAPIResponseCode;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class DionysosAPIResponse<T> {
 
     private int code;
@@ -12,8 +12,11 @@ public class DionysosAPIResponse<T> {
     private T data;
 
     @Builder
-    private DionysosAPIResponse(int code, String message, T data) {
-        this.code = code;
+    private DionysosAPIResponse(DionysosAPIResponseCode responseCode,
+                                String message,
+                                T data
+    ) {
+        this.code = responseCode.getCode();
         this.message = message;
         this.data = data;
     }
