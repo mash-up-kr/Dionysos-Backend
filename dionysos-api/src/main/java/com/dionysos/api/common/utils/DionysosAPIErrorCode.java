@@ -5,9 +5,8 @@ import lombok.Getter;
 @Getter
 public enum DionysosAPIErrorCode {
 
-    A(100, ""),
-    B(101, ""),
-    C(102, "");
+    FAILURE(101, "응답에 실패했을 때 반환"),
+    FAILURE_LOGIN(201, "로그인에 실패했을 때 반환");
 
     private int code;
     private String description;
