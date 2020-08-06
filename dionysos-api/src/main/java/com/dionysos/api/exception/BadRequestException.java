@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
+import java.util.function.Supplier;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 public class BadRequestException extends BaseException {
