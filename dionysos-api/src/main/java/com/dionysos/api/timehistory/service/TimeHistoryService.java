@@ -6,7 +6,6 @@ import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
 import com.dionysos.api.timehistory.entity.TimeHistory;
 import com.dionysos.api.timehistory.repository.TimeHistoryRepository;
 import com.dionysos.api.user.entity.User;
-import com.dionysos.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

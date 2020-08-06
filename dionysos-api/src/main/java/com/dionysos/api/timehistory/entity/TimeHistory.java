@@ -1,5 +1,6 @@
 package com.dionysos.api.timehistory.entity;
 
+
 import com.dionysos.api.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
@@ -10,9 +11,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class TimeHistory {
 
     @Id

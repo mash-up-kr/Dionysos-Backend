@@ -1,6 +1,6 @@
 package com.dionysos.api.exception;
 
-import com.dionysos.api.exception.model.ErrorModel;
+import com.dionysos.api.common.model.ErrorModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -13,16 +13,21 @@ public class NotExistUserException extends BaseException {
         this("존재하지 않는 ID 입니다.");
     }
 
-    public NotExistUserException(String msg) {
-        this(HttpStatus.NOT_FOUND.value(), msg);
+    public NotExistUserException(String message) {
+        this(HttpStatus.NOT_FOUND.value(),
+                message
+        );
     }
 
-    public NotExistUserException(int code, String msg) {
+    public NotExistUserException(int code,
+                                 String message
+    ) {
         super(ErrorModel.builder()
                 .code(code)
-                .msg(msg)
+                .message(message)
                 .timestamp(LocalDateTime.now())
-                .build());
+                .build()
+        );
     }
 
 }

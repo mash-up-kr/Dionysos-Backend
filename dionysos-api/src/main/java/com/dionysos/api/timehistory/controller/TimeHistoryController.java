@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
 @RequestMapping("/time-history")
+@RestController
 public class TimeHistoryController {
 
     private final TimeHistoryService timeHistoryService;

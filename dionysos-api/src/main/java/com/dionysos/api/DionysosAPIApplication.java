@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DionysosAPIApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DionysosAPIApplication.class, args);
+        SpringApplication.run(DionysosAPIApplication.class,
+                args
+        );
     }
 }

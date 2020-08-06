@@ -1,6 +1,6 @@
 package com.dionysos.api.exception;
 
-import com.dionysos.api.exception.model.ErrorModel;
+import com.dionysos.api.common.model.ErrorModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -12,15 +12,20 @@ public class NotExistNicknameException extends BaseException {
         this("이미 존재하는 닉네임입니다.");
     }
 
-    public NotExistNicknameException(String msg) {
-        this(HttpStatus.FOUND.value(), msg);
+    public NotExistNicknameException(String message) {
+        this(HttpStatus.FOUND.value(),
+                message
+        );
     }
 
-    public NotExistNicknameException(int code, String msg) {
+    public NotExistNicknameException(int code,
+                                     String message
+    ) {
         super(ErrorModel.builder()
                 .code(code)
-                .msg(msg)
+                .message(message)
                 .timestamp(LocalDateTime.now())
-                .build());
+                .build()
+        );
     }
 }

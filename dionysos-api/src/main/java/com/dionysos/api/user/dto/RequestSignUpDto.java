@@ -1,8 +1,9 @@
 package com.dionysos.api.user.dto;
 
 import com.dionysos.api.user.entity.ProviderType;
-import com.dionysos.api.user.entity.User;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
@@ -12,7 +13,10 @@ public class RequestSignUpDto {
     private ProviderType provider;
 
     @Builder
-    private RequestSignUpDto(String uid, String nickname, ProviderType provider) {
+    private RequestSignUpDto(String uid,
+                             String nickname,
+                             ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
         this.provider = provider;

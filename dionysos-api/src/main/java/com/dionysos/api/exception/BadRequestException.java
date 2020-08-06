@@ -1,11 +1,10 @@
 package com.dionysos.api.exception;
 
-import com.dionysos.api.exception.model.ErrorModel;
+import com.dionysos.api.common.model.ErrorModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
-import java.util.function.Supplier;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 public class BadRequestException extends BaseException {
@@ -14,14 +13,18 @@ public class BadRequestException extends BaseException {
         this(HttpStatus.BAD_REQUEST.getReasonPhrase());
     }
 
-    public BadRequestException(String msg) {
-        this(HttpStatus.BAD_REQUEST.value(), msg);
+    public BadRequestException(String message) {
+        this(HttpStatus.BAD_REQUEST.value(),
+                message
+        );
     }
 
-    public BadRequestException(int code, String msg) {
+    public BadRequestException(int code,
+                               String message
+    ) {
         super(ErrorModel.builder()
                 .code(code)
-                .msg(msg)
+                .message(message)
                 .timestamp(LocalDateTime.now())
                 .build()
         );

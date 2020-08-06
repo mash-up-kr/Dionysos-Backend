@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
@@ -28,8 +28,9 @@ public class UserService {
     }
 
     public ResponseEntity<ResponseSignInDto> signIn(RequestSignInDto requestSignInDto) {
-        String provider = requestSignInDto.getProvider().toString();
-        String convertedUid = provider + "_" + requestSignInDto.getUid();
+        String convertedUid = getConvertedUidFromUid(requestSignInDto.getUid(),
+                requestSignInDto.getProvider().toString()
+        );
 
         Optional<User> optionalUser = userRepository.findByUid(convertedUid);
 
@@ -47,8 +48,9 @@ public class UserService {
     }
 
     public ResponseEntity<ResponseSignUpDto> signUp(RequestSignUpDto requestSignUpDto) {
-        String provider = requestSignUpDto.getProvider().toString();
-        String convertedUid = provider + "_" + requestSignUpDto.getUid();
+        String convertedUid = getConvertedUidFromUid(requestSignUpDto.getUid(),
+                requestSignUpDto.getProvider().toString()
+        );
 
         if (isExisted(convertedUid))
             throw new BadRequestException("이미 가입한 회원입니다.");
@@ -67,7 +69,7 @@ public class UserService {
                 .body(ResponseSignUpDto.builder()
                         .uid(user.getUid())
                         .nickname(user.getNickname())
-                        .providerType(user.getProvider())
+                        .provider(user.getProvider())
                         .jwt(jwt)
                         .build()
                 );
@@ -82,7 +84,7 @@ public class UserService {
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
                 .nickname(user.getNickname())
-                .providerType(user.getProvider())
+                .provider(user.getProvider())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -91,23 +93,27 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public boolean existNickname(RequestNicknameCheckDto requestNicknameCheckDto) {
-        return userRepository.findByNickname(requestNicknameCheckDto.getNickname()).isPresent();
+        return userRepository.findByNickname(requestNicknameCheckDto.getNickname())
+                .isPresent();
     }
 
     @Transactional(readOnly = true)
     public User getFromUid(String uid) {
-        return userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
+        return userRepository.findByUid(uid)
+                .orElseThrow(NotExistUserException::new);
     }
 
     @Transactional(readOnly = true)
     public User getFromUid() {
         String uid = jwtService.getUid();
-        return userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
+        return userRepository.findByUid(uid)
+                .orElseThrow(NotExistUserException::new);
 
     }
 
     public User setNickname(RequestSignUpDto requestUserDto) {
-        User user = userRepository.findByUid(requestUserDto.getUid()).orElseThrow(NotExistUserException::new);
+        User user = userRepository.findByUid(requestUserDto.getUid())
+                .orElseThrow(NotExistUserException::new);
         user.changeNickname(requestUserDto.getNickname());
         userRepository.save(user);
         return user;
@@ -115,7 +121,19 @@ public class UserService {
 
     public void signOut() {
         String uid = jwtService.getUid();
-        User user = userRepository.findByUid(uid).orElseThrow(NotExistUserException::new);
+        User user = userRepository.findByUid(uid)
+                .orElseThrow(NotExistUserException::new);
         userRepository.delete(user);
+    }
+
+    private String getConvertedUidFromUid(String uid,
+                                          String provider
+    ) {
+        StringBuilder convertedUid = new StringBuilder(256);
+        convertedUid.append(provider);
+        convertedUid.append("_");
+        convertedUid.append(uid);
+
+        return convertedUid.toString();
     }
 }

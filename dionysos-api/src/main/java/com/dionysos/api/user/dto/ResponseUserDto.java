@@ -1,7 +1,6 @@
 package com.dionysos.api.user.dto;
 
 import com.dionysos.api.user.entity.ProviderType;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +10,15 @@ import lombok.NoArgsConstructor;
 public class ResponseUserDto {
     private String uid;
     private String nickname;
-    private ProviderType providerType;
+    private ProviderType provider;
 
     @Builder
-    private ResponseUserDto(String uid, String nickname, ProviderType providerType) {
+    private ResponseUserDto(String uid,
+                            String nickname,
+                            ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
-        this.providerType = providerType;
+        this.provider = provider;
     }
 }

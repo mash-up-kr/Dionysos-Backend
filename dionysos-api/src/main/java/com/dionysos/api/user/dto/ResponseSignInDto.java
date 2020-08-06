@@ -14,7 +14,11 @@ public class ResponseSignInDto {
     private ProviderType provider;
 
     @Builder
-    private ResponseSignInDto(String uid, String nickname, String jwt, ProviderType provider) {
+    private ResponseSignInDto(String uid,
+                              String nickname,
+                              String jwt,
+                              ProviderType provider
+    ) {
         this.uid = uid;
         this.nickname = nickname;
         this.jwt = jwt;

@@ -1,6 +1,6 @@
 package com.dionysos.api.exception;
 
-import com.dionysos.api.exception.model.ErrorModel;
+import com.dionysos.api.common.model.ErrorModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -8,15 +8,20 @@ import java.time.LocalDateTime;
 
 @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 public class UnAuthorizedException extends BaseException {
-    public UnAuthorizedException(String msg) {
-        this(HttpStatus.UNAUTHORIZED.value(), msg);
+    public UnAuthorizedException(String message) {
+        this(HttpStatus.UNAUTHORIZED.value(),
+                message
+        );
     }
 
-    public UnAuthorizedException(int code, String msg) {
+    public UnAuthorizedException(int code,
+                                 String message
+    ) {
         super(ErrorModel.builder()
                 .code(code)
-                .msg(msg)
+                .message(message)
                 .timestamp(LocalDateTime.now())
-                .build());
+                .build()
+        );
     }
 }
