@@ -4,10 +4,7 @@ import com.dionysos.api.timehistory.entity.TimeHistory;
 import lombok.*;
 
 import javax.persistence.*;
-<<<<<<< HEAD
 import com.dionysos.api.diary.entity.Diary;
-=======
->>>>>>> master
 import java.util.List;
 
 @Getter
