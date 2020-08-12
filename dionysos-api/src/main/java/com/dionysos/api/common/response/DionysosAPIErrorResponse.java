@@ -16,11 +16,10 @@ public class DionysosAPIErrorResponse<T extends ErrorModel> {
 
     @Builder
     private DionysosAPIErrorResponse(DionysosAPIErrorCode errorCode,
-                                     String message,
                                      List<T> errors
     ) {
         this.code = errorCode.getCode();
-        this.message = message;
+        this.message = errorCode.getDescription();
         this.errors = errors;
     }
 

@@ -1,9 +1,10 @@
 package com.dionysos.api.user.service;
 
 import com.dionysos.api.common.exception.BadRequestException;
-import com.dionysos.api.user.exception.NotExistUserException;
+import com.dionysos.api.common.response.code.DionysosAPIErrorCode;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
+import com.dionysos.api.user.exception.NotExistUserException;
 import com.dionysos.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,7 +54,7 @@ public class UserService {
         );
 
         if (isExisted(convertedUid))
-            throw new BadRequestException("이미 가입한 회원입니다.");
+            throw new BadRequestException(DionysosAPIErrorCode.UNAUTHORIZATION);
 
         User user = User.builder()
                         .uid(convertedUid)

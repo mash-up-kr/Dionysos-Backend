@@ -5,8 +5,9 @@ import lombok.Getter;
 @Getter
 public enum DionysosAPIResponseCode {
 
-    SUCCESS(100, "응답에 성공했을 때 반환"),
-    SUCCESS_LOGIN(200, "로그인에 성공했을 때 반환");
+    SUCCESS(100, "응답에 정상적으로 성공했습니다."),
+
+    NOT_EXIST_NICKNAME(200, "닉네임이 중복되지 않습니다.");
 
     private int code;
     private String description;

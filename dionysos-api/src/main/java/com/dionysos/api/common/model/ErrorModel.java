@@ -1,5 +1,7 @@
 package com.dionysos.api.common.model;
 
+import com.dionysos.api.common.response.code.DionysosAPIErrorCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,13 +13,17 @@ public class ErrorModel {
     private String message;
     private LocalDateTime timestamp;
 
+    @JsonIgnore
+    private DionysosAPIErrorCode errorCode;
+
     @Builder
-    private ErrorModel(int code,
-                       String message,
+    private ErrorModel(DionysosAPIErrorCode errorCode,
                        LocalDateTime timestamp
     ) {
-        this.code = code;
-        this.message = message;
+        this.code = errorCode.getCode();
+        this.message = errorCode.getDescription();
         this.timestamp = timestamp;
+
+        this.errorCode = errorCode;
     }
 }

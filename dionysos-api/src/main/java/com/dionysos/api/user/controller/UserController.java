@@ -1,6 +1,6 @@
 package com.dionysos.api.user.controller;
 
-import com.dionysos.api.user.exception.NotExistNicknameException;
+import com.dionysos.api.user.exception.AlreadyExistNicknameException;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity checkNickname(@RequestBody RequestNicknameCheckDto requestBody) {
         boolean result = userService.existNickname(requestBody);
         if (result == true) {
-            throw new NotExistNicknameException();
+            throw new AlreadyExistNicknameException();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)

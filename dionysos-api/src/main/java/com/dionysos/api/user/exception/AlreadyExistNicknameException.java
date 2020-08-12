@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
 
-@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-public class UnAuthorizedException extends UserBaseException {
-    public UnAuthorizedException() {
-        this(DionysosAPIErrorCode.UNAUTHORIZATION);
+@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+public class AlreadyExistNicknameException extends UserBaseException {
+
+    public AlreadyExistNicknameException() {
+        this(DionysosAPIErrorCode.EXIST_NICKNAME);
     }
 
-    public UnAuthorizedException(DionysosAPIErrorCode errorCode) {
+    public AlreadyExistNicknameException(DionysosAPIErrorCode errorCode) {
         super(ErrorModel.builder()
                 .errorCode(errorCode)
                 .timestamp(LocalDateTime.now())

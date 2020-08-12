@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class BaseException extends RuntimeException {
 
-    private ErrorModel error;
+    protected ErrorModel error;
 
     @Builder
     protected BaseException(ErrorModel error) {
