@@ -1,6 +1,7 @@
 package com.dionysos.api.user.controller;
 
-import com.dionysos.api.exception.NotExistNicknameException;
+import com.dionysos.api.common.response.DionysosAPIResponse;
+import com.dionysos.api.user.exception.AlreadyExistNicknameException;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
@@ -17,12 +18,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<ResponseSignInDto> signIn(@RequestBody RequestSignInDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<ResponseSignInDto>> signIn(@RequestBody RequestSignInDto requestBody) {
         return userService.signIn(requestBody);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseSignUpDto> signUp(@RequestBody RequestSignUpDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<ResponseSignUpDto>> signUp(@RequestBody RequestSignUpDto requestBody) {
         return userService.signUp(requestBody);
     }
 
@@ -30,7 +31,7 @@ public class UserController {
     public ResponseEntity checkNickname(@RequestBody RequestNicknameCheckDto requestBody) {
         boolean result = userService.existNickname(requestBody);
         if (result == true) {
-            throw new NotExistNicknameException();
+            throw new AlreadyExistNicknameException();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -51,7 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/my")
-    public ResponseEntity<ResponseUserDto> changeProfile(@RequestBody ReqeustChangeNicknameDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<ResponseUserDto>> changeProfile(@RequestBody ReqeustChangeNicknameDto requestBody) {
         return userService.changeProfile(requestBody);
     }
 

@@ -1,9 +1,11 @@
 package com.dionysos.api.user.service;
 
-import com.dionysos.api.exception.BadRequestException;
-import com.dionysos.api.exception.NotExistUserException;
+import com.dionysos.api.auth.service.JwtService;
+import com.dionysos.api.common.response.DionysosAPIResponse;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
+import com.dionysos.api.user.exception.AlreadyExistUserException;
+import com.dionysos.api.user.exception.NotExistUserException;
 import com.dionysos.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,7 @@ public class UserService {
         return userRepository.findByUid(uid).isPresent();
     }
 
-    public ResponseEntity<ResponseSignInDto> signIn(RequestSignInDto requestSignInDto) {
+    public ResponseEntity<DionysosAPIResponse<ResponseSignInDto>> signIn(RequestSignInDto requestSignInDto) {
         String convertedUid = getConvertedUidFromUid(requestSignInDto.getUid(),
                 requestSignInDto.getProvider().toString()
         );
@@ -36,24 +38,31 @@ public class UserService {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+            ResponseSignInDto dto = ResponseSignInDto.builder()
+                    .uid(user.getUid())
+                    .nickname(user.getNickname())
+                    .provider(user.getProvider())
+                    .jwt(jwtService.create(user.getUid()))
+                    .build();
+
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(ResponseSignInDto.builder()
-                            .uid(user.getUid())
-                            .nickname(user.getNickname())
-                            .jwt(jwtService.create(user.getUid()))
-                    .build());
+                    .body(DionysosAPIResponse.<ResponseSignInDto>builder()
+                            .result(dto)
+                            .build()
+            );
          } else {
             throw new NotExistUserException();
         }
     }
 
-    public ResponseEntity<ResponseSignUpDto> signUp(RequestSignUpDto requestSignUpDto) {
+    public ResponseEntity<DionysosAPIResponse<ResponseSignUpDto>> signUp(RequestSignUpDto requestSignUpDto) {
         String convertedUid = getConvertedUidFromUid(requestSignUpDto.getUid(),
                 requestSignUpDto.getProvider().toString()
         );
 
-        if (isExisted(convertedUid))
-            throw new BadRequestException("이미 가입한 회원입니다.");
+        if (isExisted(convertedUid)) {
+            throw new AlreadyExistUserException();
+        }
 
         User user = User.builder()
                         .uid(convertedUid)
@@ -65,16 +74,20 @@ public class UserService {
 
         String jwt = jwtService.create(convertedUid);
 
+        ResponseSignUpDto dto = ResponseSignUpDto.builder()
+                .uid(user.getUid())
+                .nickname(user.getNickname())
+                .provider(user.getProvider())
+                .jwt(jwt)
+                .build();
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseSignUpDto.builder()
-                        .uid(user.getUid())
-                        .nickname(user.getNickname())
-                        .provider(user.getProvider())
-                        .jwt(jwt)
+                .body(DionysosAPIResponse.<ResponseSignUpDto>builder()
+                        .result(dto)
                         .build()
                 );
     }
-    public ResponseEntity changeProfile(ReqeustChangeNicknameDto requestNicknameDto) {
+    public ResponseEntity<DionysosAPIResponse<ResponseUserDto>> changeProfile(ReqeustChangeNicknameDto requestNicknameDto) {
         RequestSignUpDto requestUserDto = RequestSignUpDto.builder()
                 .uid(jwtService.getUid())
                 .nickname(requestNicknameDto.getNickname())
@@ -88,7 +101,10 @@ public class UserService {
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(responseUserDto);
+                .body(DionysosAPIResponse.<ResponseUserDto>builder()
+                        .result(responseUserDto)
+                        .build()
+                );
     }
 
     @Transactional(readOnly = true)
