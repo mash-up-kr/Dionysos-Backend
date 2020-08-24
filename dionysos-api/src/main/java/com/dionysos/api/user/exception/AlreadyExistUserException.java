@@ -7,13 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-public class AlreadyExistNicknameException extends BaseException {
+public class AlreadyExistUserException extends BaseException {
 
-    public AlreadyExistNicknameException() {
-        this(DionysosAPIErrorCode.EXIST_NICKNAME);
+    public AlreadyExistUserException() {
+        this(DionysosAPIErrorCode.EXIST_ACCOUNT);
     }
 
-    public AlreadyExistNicknameException(DionysosAPIErrorCode errorCode) {
+    public AlreadyExistUserException(DionysosAPIErrorCode errorCode) {
         super(ErrorResponseDto.builder()
                 .errorCode(errorCode)
                 .build()

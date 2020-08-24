@@ -1,28 +1,29 @@
-package com.dionysos.api.common.model;
+package com.dionysos.api.common.dto;
 
 import com.dionysos.api.common.response.code.DionysosAPIErrorCode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
-public class ErrorModel {
+public class ErrorResponseDto {
     private int code;
     private String message;
-    private LocalDateTime timestamp;
 
     @JsonIgnore
     private DionysosAPIErrorCode errorCode;
 
     @Builder
-    private ErrorModel(DionysosAPIErrorCode errorCode,
-                       LocalDateTime timestamp
-    ) {
+    private ErrorResponseDto(DionysosAPIErrorCode errorCode, Optional<String> message) {
         this.code = errorCode.getCode();
-        this.message = errorCode.getDescription();
-        this.timestamp = timestamp;
+
+        if (message != null && message.isPresent()) {
+            this.message = message.get();
+        } else {
+            this.message = errorCode.getMessage();
+        }
 
         this.errorCode = errorCode;
     }

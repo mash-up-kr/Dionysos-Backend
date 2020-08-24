@@ -1,6 +1,7 @@
-package com.dionysos.api.user.service;
+package com.dionysos.api.auth.service;
 
-import com.dionysos.api.user.exception.UnAuthorizedException;
+import com.dionysos.api.common.response.code.DionysosAPIErrorCode;
+import com.dionysos.api.auth.exception.UnAuthorizedException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -84,9 +85,9 @@ public class JwtService {
                     .parseClaimsJws(jws);
         } catch (ExpiredJwtException e) {
             log.error("Token expired : " + jws);
-            throw new UnAuthorizedException("발급된 토큰이 만료됐습니다.");
+            throw new UnAuthorizedException(DionysosAPIErrorCode.TOKEN_EXPIRED);
         } catch (JwtException e) {
-            throw new UnAuthorizedException("올바르지 않은 계정입니다.");
+            throw new UnAuthorizedException(DionysosAPIErrorCode.UNAUTHORIZATION);
         }
 
         return claims;

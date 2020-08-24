@@ -1,20 +1,17 @@
 package com.dionysos.api.common.response;
 
-import com.dionysos.api.common.model.ErrorModel;
-import com.dionysos.api.common.response.code.DionysosAPIErrorCode;
+import com.dionysos.api.common.dto.ErrorResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class DionysosAPIErrorResponse<T extends ErrorModel> {
+public class DionysosAPIErrorResponse<E extends ErrorResponseDto> {
 
-    private int code;
-    private String message;
+    private E error;
 
     @Builder
-    private DionysosAPIErrorResponse(DionysosAPIErrorCode errorCode) {
-        this.code = errorCode.getCode();
-        this.message = errorCode.getDescription();
+    private DionysosAPIErrorResponse(E errorModel) {
+        this.error = errorModel;
     }
 
 }

@@ -1,11 +1,9 @@
 package com.dionysos.api.common.exception;
 
-import com.dionysos.api.common.model.ErrorModel;
+import com.dionysos.api.common.dto.ErrorResponseDto;
 import com.dionysos.api.common.response.code.DionysosAPIErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.time.LocalDateTime;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 public class BadRequestException extends BaseException {
@@ -15,9 +13,8 @@ public class BadRequestException extends BaseException {
     }
 
     public BadRequestException(DionysosAPIErrorCode errorCode) {
-        super(ErrorModel.builder()
+        super(ErrorResponseDto.builder()
                 .errorCode(errorCode)
-                .timestamp(LocalDateTime.now())
                 .build()
         );
     }
