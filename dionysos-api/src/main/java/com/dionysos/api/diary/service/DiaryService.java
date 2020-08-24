@@ -1,12 +1,12 @@
 package com.dionysos.api.diary.service;
 
+import com.dionysos.api.auth.exception.UnAuthorizedException;
 import com.dionysos.api.diary.dto.RequestCreateDiaryDto;
 import com.dionysos.api.diary.dto.RequestUpdateDiaryDto;
 import com.dionysos.api.diary.dto.ResponseDiaryDto;
 import com.dionysos.api.diary.entity.Diary;
+import com.dionysos.api.diary.exception.NotFoundDiaryException;
 import com.dionysos.api.diary.repository.DiaryRepository;
-import com.dionysos.api.exception.BadRequestException;
-import com.dionysos.api.exception.UnAuthorizedException;
 import com.dionysos.api.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,12 +40,13 @@ public class DiaryService {
                        RequestUpdateDiaryDto requestUpdateDiaryDto,
                        Long user_id
     ) {
+
         Diary diary = diaryRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("해당 id가 없습니다.id= " + id));
+                .orElseThrow(() -> new NotFoundDiaryException());
 
         if (diary.getUser()
                 .getId() != user_id) {
-            throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
+            throw new UnAuthorizedException();
         }
 
         diary.update(requestUpdateDiaryDto.getImageUrl(),
@@ -58,12 +59,12 @@ public class DiaryService {
                        Long user_id
     ) {
         Diary diary = diaryRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException(("해당 id가 없습니다.id= " + id)));
+                .orElseThrow(() -> new NotFoundDiaryException());
 
         if (diary.getUser()
                 .getId() != user_id
         ) {
-            throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
+            throw new UnAuthorizedException();
         }
 
         diaryRepository.delete(diary);
@@ -87,12 +88,12 @@ public class DiaryService {
                                      Long user_id
     ) {
         Diary diary = diaryRepository.findById(id)
-                .orElseThrow(()-> new BadRequestException(("해당 id가 없습니다.id= " + id)));
+                .orElseThrow(()-> new NotFoundDiaryException());
 
         if (diary.getUser()
                 .getId() != user_id
         ) {
-            throw new UnAuthorizedException("해당 게시글의 주인이 아닙니다.");
+            throw new UnAuthorizedException();
         }
 
         return ResponseDiaryDto.builder()
