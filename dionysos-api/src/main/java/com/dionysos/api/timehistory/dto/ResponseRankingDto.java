@@ -1,8 +1,6 @@
 package com.dionysos.api.timehistory.dto;
 
 import com.dionysos.api.timehistory.entity.TimeHistory;
-import com.dionysos.api.user.entity.User;
-import com.dionysos.api.user.repository.UserRepository;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,8 +18,6 @@ public class ResponseRankingDto {
         this.duration = entity.getDuration();
     }
 
-
-    @Builder
     public ResponseRankingDto(ResponseRankingWeekMonthDto responseRankingWeekMonthDto) {
 
         this.id = responseRankingWeekMonthDto.getId();

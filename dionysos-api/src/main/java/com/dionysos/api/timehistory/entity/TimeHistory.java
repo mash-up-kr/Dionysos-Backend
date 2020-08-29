@@ -27,7 +27,6 @@ public class TimeHistory {
 
     @ManyToOne
     @JoinColumn
-    //TimeHistory가 주인
     public User user;
 
     @Builder

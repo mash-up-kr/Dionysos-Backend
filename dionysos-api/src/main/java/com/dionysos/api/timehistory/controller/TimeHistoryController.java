@@ -25,15 +25,13 @@ public class TimeHistoryController {
     public ResponseEntity createOrUpdate(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) throws Exception {
         User user = userService.getFromUid();
         timeHistoryService.createOrUpdate(requestSaveTimeHistoryDto, user);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    //Get
-    //duration만 넘겨주기
     @GetMapping("")
-    public ResponseEntity<ResponseTimeHistoryDto> findByUid() {
+    public ResponseEntity<ResponseTimeHistoryDto> getTotalHrDay() {
         User user = userService.getFromUid();
-        ResponseTimeHistoryDto dto = timeHistoryService.findByUid(user);
+        ResponseTimeHistoryDto dto = timeHistoryService.getTotalHrDay(user);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 

@@ -1,6 +1,6 @@
 package com.dionysos.api.timehistory.dto;
 
-import com.dionysos.api.timehistory.entity.TimeHistory;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,10 +11,11 @@ public class ResponseTimeHistoryDto {
     private LocalDateTime historyDay;
     private Long duration;
 
-    public ResponseTimeHistoryDto(TimeHistory entity) {
-        this.id = entity.getId();
-        this.historyDay = entity.getHistoryDay();
-        this.duration = entity.getDuration();
+    @Builder
+    public ResponseTimeHistoryDto(Long id, LocalDateTime historyDay, Long duration) {
+        this.id = id;
+        this.historyDay = historyDay;
+        this.duration = duration;
     }
 
 }

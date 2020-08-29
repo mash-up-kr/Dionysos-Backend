@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class TimeHistoryService {
 
     private final TimeHistoryRepository timeHistoryRepository;
+    private final int stndHr = 6;
 
     @Transactional
     public void createOrUpdate(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
@@ -82,7 +83,7 @@ public class TimeHistoryService {
         if (timeHistory.isRunning()) {
             int countedSecond = 60 - timeHistory.getHistoryDay().getSecond();
             int countedMinute = 60 * (60 - timeHistory.getHistoryDay().getMinute());
-            int countedHour = 60 * 60 * (timeHistory.getHistoryDay().getHour() - 6);
+            int countedHour = 60 * 60 * (timeHistory.getHistoryDay().getHour() - stndHr);
 
             if (countedHour < 0) {
                 countedHour *= -1;
@@ -92,33 +93,37 @@ public class TimeHistoryService {
             timeHistory.update(newDuration, LocalDateTime.of(timeHistory.getHistoryDay().getYear(),
                     timeHistory.getHistoryDay().getMonth(),
                     timeHistory.getHistoryDay().getDayOfMonth(),
-                    05,
+                    5,
                     59,
                     59));
         }
     }
 
 
-    public ResponseTimeHistoryDto findByUid(User user) {
+    public ResponseTimeHistoryDto getTotalHrDay(User user) {
 
         TimeHistory entity = timeHistoryRepository.getDuration(user.getId(),
                 getStandardTime(LocalDateTime.now()),
                 LocalDateTime.now()
         )
                 .orElseThrow(() -> new IllegalArgumentException("오늘 기록이 없습니다"));
-        return new ResponseTimeHistoryDto(entity);
+        return ResponseTimeHistoryDto.builder()
+                .id(entity.getId())
+                .historyDay(entity.getHistoryDay())
+                .duration(entity.getDuration())
+                .build();
     }
 
     private LocalDateTime getStandardTime(LocalDateTime startTime) {
 
-        if (startTime.getHour() < 6) {
+        if (startTime.getHour() < stndHr) {
             startTime = startTime.minusDays(1)
-                    .plusHours(6 - startTime.getHour())
+                    .plusHours(stndHr - startTime.getHour())
                     .minusMinutes(startTime.getMinute())
                     .minusSeconds(startTime.getSecond())
                     .minusNanos(startTime.getNano());
         } else {
-            startTime = startTime.minusHours(startTime.getHour() - 6)
+            startTime = startTime.minusHours(startTime.getHour() - stndHr)
                     .minusMinutes(startTime.getMinute())
                     .minusSeconds(startTime.getSecond())
                     .minusNanos(startTime.getNano());
@@ -129,7 +134,7 @@ public class TimeHistoryService {
 
     private Long countDuration(LocalDateTime historyDay) {
         int countedHour;
-        if (historyDay.getHour() < 6) {
+        if (historyDay.getHour() < stndHr) {
             countedHour = 60 * 60 * (historyDay.getHour() + 18);
         } else {
             countedHour = 60 * 60 * historyDay.getHour();
@@ -150,13 +155,8 @@ public class TimeHistoryService {
                 .collect(Collectors.toList());
     }
 
-    //일주일 랭킹은 월-일
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> weekRanking() {
-
-        System.out.println(findWklyStndTms());
-        System.out.println(timeHistoryRepository.dayRanking(findWklyStndTms(),
-                LocalDateTime.now()));
 
         return timeHistoryRepository.weeklyMonthlyRanking(findWklyStndTms(),
                 LocalDateTime.now())
@@ -176,10 +176,10 @@ public class TimeHistoryService {
     }
 
     private LocalDateTime findWklyStndTms() {
-        LocalDateTime time = LocalDate.now().atTime(06, 00, 00);
+        LocalDateTime time = LocalDate.now().atTime(stndHr, 0, 0);
 
-        LocalTime baseTime = LocalTime.of(6, 0,0);
-        if(LocalDateTime.now().getDayOfWeek().equals("MONDAY")
+        LocalTime baseTime = LocalTime.of(stndHr, 0,0);
+        if(LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY)
                 && LocalTime.now().isAfter(baseTime)) { }
         else {
             time = time.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
@@ -190,9 +190,9 @@ public class TimeHistoryService {
 
 
     private LocalDateTime findMnlyStndTms() {
-        LocalDateTime time = LocalDate.now().atTime(06, 00, 00);
+        LocalDateTime time = LocalDate.now().atTime(stndHr, 0, 0);
 
-        LocalTime baseTime = LocalTime.of(6, 0,0);
+        LocalTime baseTime = LocalTime.of(stndHr, 0,0);
         if(LocalDateTime.now().getDayOfMonth()==1
                 && LocalTime.now().isBefore(baseTime)) {
             time = time.minusMonths(1);
