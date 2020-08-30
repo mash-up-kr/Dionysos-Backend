@@ -81,7 +81,7 @@ public class UserService {
                 .jwt(jwt)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(DionysosAPIResponse.<ResponseSignUpDto>builder()
                         .result(dto)
                         .build()
