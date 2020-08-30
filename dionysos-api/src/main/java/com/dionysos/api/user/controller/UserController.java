@@ -28,18 +28,18 @@ public class UserController {
     }
 
     @PostMapping("/check/nickname")
-    public ResponseEntity checkNickname(@RequestBody RequestNicknameCheckDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<Boolean>> checkNickname(@RequestBody RequestNicknameCheckDto requestBody) {
         boolean result = userService.existNickname(requestBody);
         if (result == true) {
             throw new AlreadyExistNicknameException();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(DionysosAPIResponse.<Boolean>builder().result(true).build());
     }
 
     @GetMapping("/my")
-    public ResponseEntity<ResponseUserDto> myProfile() {
+    public ResponseEntity<DionysosAPIResponse<ResponseUserDto>> myProfile() {
         User user = userService.getFromUid();
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
@@ -48,7 +48,7 @@ public class UserController {
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(responseUserDto);
+                .body(DionysosAPIResponse.<ResponseUserDto>builder().result(responseUserDto).build());
     }
 
     @PutMapping("/my")
@@ -57,10 +57,10 @@ public class UserController {
     }
 
     @DeleteMapping("/signout")
-    public ResponseEntity signOut() {
+    public ResponseEntity<DionysosAPIResponse<Boolean>> signOut() {
         userService.signOut();
-        return ResponseEntity.status(HttpStatus.GONE)
-                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(DionysosAPIResponse.<Boolean>builder().result(true).build());
     }
 
 }
