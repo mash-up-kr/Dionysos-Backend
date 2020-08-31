@@ -1,6 +1,7 @@
 package com.dionysos.api.user.controller;
 
-import com.dionysos.api.exception.NotExistNicknameException;
+import com.dionysos.api.common.response.DionysosAPIResponse;
+import com.dionysos.api.user.exception.AlreadyExistNicknameException;
 import com.dionysos.api.user.dto.*;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
@@ -17,28 +18,28 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<ResponseSignInDto> signIn(@RequestBody RequestSignInDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<ResponseSignInDto>> signIn(@RequestBody RequestSignInDto requestBody) {
         return userService.signIn(requestBody);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseSignUpDto> signUp(@RequestBody RequestSignUpDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<ResponseSignUpDto>> signUp(@RequestBody RequestSignUpDto requestBody) {
         return userService.signUp(requestBody);
     }
 
     @PostMapping("/check/nickname")
-    public ResponseEntity checkNickname(@RequestBody RequestNicknameCheckDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<Boolean>> checkNickname(@RequestBody RequestNicknameCheckDto requestBody) {
         boolean result = userService.existNickname(requestBody);
         if (result == true) {
-            throw new NotExistNicknameException();
+            throw new AlreadyExistNicknameException();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(DionysosAPIResponse.<Boolean>builder().result(true).build());
     }
 
     @GetMapping("/my")
-    public ResponseEntity<ResponseUserDto> myProfile() {
+    public ResponseEntity<DionysosAPIResponse<ResponseUserDto>> myProfile() {
         User user = userService.getFromUid();
         ResponseUserDto responseUserDto = ResponseUserDto.builder()
                 .uid(user.getUid())
@@ -47,19 +48,19 @@ public class UserController {
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(responseUserDto);
+                .body(DionysosAPIResponse.<ResponseUserDto>builder().result(responseUserDto).build());
     }
 
     @PutMapping("/my")
-    public ResponseEntity<ResponseUserDto> changeProfile(@RequestBody ReqeustChangeNicknameDto requestBody) {
+    public ResponseEntity<DionysosAPIResponse<ResponseUserDto>> changeProfile(@RequestBody ReqeustChangeNicknameDto requestBody) {
         return userService.changeProfile(requestBody);
     }
 
     @DeleteMapping("/signout")
-    public ResponseEntity signOut() {
+    public ResponseEntity<DionysosAPIResponse<Boolean>> signOut() {
         userService.signOut();
-        return ResponseEntity.status(HttpStatus.GONE)
-                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(DionysosAPIResponse.<Boolean>builder().result(true).build());
     }
 
 }
