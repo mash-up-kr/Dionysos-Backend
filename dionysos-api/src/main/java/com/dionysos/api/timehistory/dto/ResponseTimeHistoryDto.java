@@ -12,7 +12,7 @@ public class ResponseTimeHistoryDto {
     private Long duration;
 
     @Builder
-    public ResponseTimeHistoryDto(Long id, LocalDateTime historyDay, Long duration) {
+    private ResponseTimeHistoryDto(Long id, LocalDateTime historyDay, Long duration) {
         this.id = id;
         this.historyDay = historyDay;
         this.duration = duration;
