@@ -1,5 +1,6 @@
 package com.dionysos.api.timehistory.controller;
 
+import com.dionysos.api.common.response.DionysosAPIResponse;
 import com.dionysos.api.timehistory.dto.RequestSaveTimeHistoryDto;
 import com.dionysos.api.timehistory.dto.ResponseRankingDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
@@ -22,17 +23,18 @@ public class TimeHistoryController {
     private final UserService userService;
 
     @PostMapping("")
-    public ResponseEntity createOrUpdate(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) throws Exception {
+    public ResponseEntity<DionysosAPIResponse> createOrUpdate(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) throws Exception {
         User user = userService.getFromUid();
         timeHistoryService.createOrUpdate(requestSaveTimeHistoryDto, user);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("")
-    public ResponseEntity<ResponseTimeHistoryDto> getTotalHrDay() {
+    public ResponseEntity<DionysosAPIResponse<ResponseTimeHistoryDto>> getTotalHrDay() {
         User user = userService.getFromUid();
         ResponseTimeHistoryDto dto = timeHistoryService.getTotalHrDay(user);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(DionysosAPIResponse.<ResponseTimeHistoryDto>builder().result(dto).build());
     }
 
     @GetMapping("/ranking/day")

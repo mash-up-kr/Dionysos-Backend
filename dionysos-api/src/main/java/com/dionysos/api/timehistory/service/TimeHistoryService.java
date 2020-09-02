@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -30,21 +31,14 @@ public class TimeHistoryService {
     public void createOrUpdate(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
                                User user
     ) {
-        if (timeHistoryRepository.getTimeHistory(user.getId(),
+        TimeHistory dayRec = timeHistoryRepository.getTimeHistory(user.getId(),
                 getStandardTime(requestSaveTimeHistoryDto.getHistoryDay()),
-                requestSaveTimeHistoryDto.getHistoryDay())
-                .isPresent()
-        ) {
-            //재시작, 일시정지(=중지)
-            update(requestSaveTimeHistoryDto, user);
+                requestSaveTimeHistoryDto.getHistoryDay()).get(0);
+        if (dayRec == null) {
+            dayEnd(user);
+            create(requestSaveTimeHistoryDto, user);
         } else {
-            //전 날 작업 마무리 여부 확인
-            try {
-                dayEnd(user);
-            } catch (Exception e) {
-            } finally {
-                create(requestSaveTimeHistoryDto, user);
-            }
+            dayRec.update(requestSaveTimeHistoryDto.getDuration(), requestSaveTimeHistoryDto.getHistoryDay());
         }
     }
 
@@ -61,19 +55,6 @@ public class TimeHistoryService {
                 .duration(duration)
                 .build();
         timeHistoryRepository.save(timeHistory);
-    }
-
-    @Transactional
-    public void update(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
-                       User user
-    ) {
-
-        TimeHistory timeHistory = timeHistoryRepository.getTimeHistory(user.getId(),
-                getStandardTime(requestSaveTimeHistoryDto.getHistoryDay()),
-                LocalDateTime.now()
-        )
-                .orElseThrow(() -> new IllegalArgumentException("해당 timeHistory가 없습니다."));
-        timeHistory.update(requestSaveTimeHistoryDto.getDuration(), requestSaveTimeHistoryDto.getHistoryDay());
     }
 
     @Transactional
@@ -108,7 +89,6 @@ public class TimeHistoryService {
         )
                 .orElseThrow(() -> new IllegalArgumentException("오늘 기록이 없습니다"));
         return ResponseTimeHistoryDto.builder()
-                .id(entity.getId())
                 .historyDay(entity.getHistoryDay())
                 .duration(entity.getDuration())
                 .build();
