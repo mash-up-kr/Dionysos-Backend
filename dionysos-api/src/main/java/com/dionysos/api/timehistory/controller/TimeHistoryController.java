@@ -23,7 +23,7 @@ public class TimeHistoryController {
     private final UserService userService;
 
     @PostMapping("")
-    public ResponseEntity<DionysosAPIResponse> createOrUpdate(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) throws Exception {
+    public ResponseEntity createOrUpdate(@RequestBody RequestSaveTimeHistoryDto requestSaveTimeHistoryDto) throws Exception {
         User user = userService.getFromUid();
         timeHistoryService.createOrUpdate(requestSaveTimeHistoryDto, user);
         return ResponseEntity.status(HttpStatus.OK).build();

@@ -31,55 +31,27 @@ public class TimeHistoryService {
     public void createOrUpdate(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
                                User user
     ) {
-        TimeHistory dayRec = timeHistoryRepository.getTimeHistory(user.getId(),
+        Optional<TimeHistory> dayRecOptional = timeHistoryRepository.getTimeHistory(user.getId(),
                 getStandardTime(requestSaveTimeHistoryDto.getHistoryDay()),
-                requestSaveTimeHistoryDto.getHistoryDay()).get(0);
-        if (dayRec == null) {
-            dayEnd(user);
-            create(requestSaveTimeHistoryDto, user);
+                requestSaveTimeHistoryDto.getHistoryDay());
+        if (dayRecOptional.isPresent()) {
+            dayRecOptional.get().update(requestSaveTimeHistoryDto.getDuration(), requestSaveTimeHistoryDto.getHistoryDay());
         } else {
-            dayRec.update(requestSaveTimeHistoryDto.getDuration(), requestSaveTimeHistoryDto.getHistoryDay());
+            create(requestSaveTimeHistoryDto, user);
         }
     }
-
 
     @Transactional
     public void create(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
                        User user
     ) {
-        Long duration = countDuration(getStandardTime(requestSaveTimeHistoryDto.getHistoryDay()));
-
         TimeHistory timeHistory = TimeHistory.builder()
                 .historyDay(requestSaveTimeHistoryDto.getHistoryDay())
                 .user(user)
-                .duration(duration)
+                .duration(requestSaveTimeHistoryDto.getDuration())
                 .build();
         timeHistoryRepository.save(timeHistory);
     }
-
-    @Transactional
-    public void dayEnd(User user) {
-        TimeHistory timeHistory = timeHistoryRepository.getLastDay(user.getId())
-                .orElseThrow(() -> new IllegalArgumentException("마지막 날을 못 찾았습니다"));
-        if (timeHistory.isRunning()) {
-            int countedSecond = 60 - timeHistory.getHistoryDay().getSecond();
-            int countedMinute = 60 * (60 - timeHistory.getHistoryDay().getMinute());
-            int countedHour = 60 * 60 * (timeHistory.getHistoryDay().getHour() - stndHr);
-
-            if (countedHour < 0) {
-                countedHour *= -1;
-            }
-
-            Long newDuration = (long) countedSecond + countedMinute + countedHour + timeHistory.getDuration();
-            timeHistory.update(newDuration, LocalDateTime.of(timeHistory.getHistoryDay().getYear(),
-                    timeHistory.getHistoryDay().getMonth(),
-                    timeHistory.getHistoryDay().getDayOfMonth(),
-                    5,
-                    59,
-                    59));
-        }
-    }
-
 
     public ResponseTimeHistoryDto getTotalHrDay(User user) {
 
@@ -94,35 +66,20 @@ public class TimeHistoryService {
                 .build();
     }
 
-    private LocalDateTime getStandardTime(LocalDateTime startTime) {
+    private LocalDateTime getStandardTime(LocalDateTime dateTime) {
 
-        if (startTime.getHour() < stndHr) {
-            startTime = startTime.minusDays(1)
-                    .plusHours(stndHr - startTime.getHour())
-                    .minusMinutes(startTime.getMinute())
-                    .minusSeconds(startTime.getSecond())
-                    .minusNanos(startTime.getNano());
+        LocalTime time = LocalTime.of(6, 0);
+
+        if (dateTime.getHour() < stndHr) {
+            dateTime = dateTime.minusDays(1);
+            LocalDate date = dateTime.toLocalDate();
+
+            return LocalDateTime.of(date, time);
         } else {
-            startTime = startTime.minusHours(startTime.getHour() - stndHr)
-                    .minusMinutes(startTime.getMinute())
-                    .minusSeconds(startTime.getSecond())
-                    .minusNanos(startTime.getNano());
+            LocalDate date = dateTime.toLocalDate();
+
+            return LocalDateTime.of(date, time);
         }
-
-        return startTime;
-    }
-
-    private Long countDuration(LocalDateTime historyDay) {
-        int countedHour;
-        if (historyDay.getHour() < stndHr) {
-            countedHour = 60 * 60 * (historyDay.getHour() + 18);
-        } else {
-            countedHour = 60 * 60 * historyDay.getHour();
-        }
-        int countedMinute = 60 * historyDay.getMinute();
-        int countedSecond = historyDay.getSecond();
-
-        return (long) countedHour + countedMinute + countedSecond;
     }
 
     @Transactional(readOnly = true)

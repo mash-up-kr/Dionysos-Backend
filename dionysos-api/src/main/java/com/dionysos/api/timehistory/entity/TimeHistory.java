@@ -45,10 +45,6 @@ public class TimeHistory {
     ) {
         this.duration = duration;
         this.historyDay = historyDay;
-        this.isRunning = !this.isRunning;
     }
 
-    public void addDayOfMonth() {
-        this.historyDay = historyDay.plusDays(1);
-    }
 }
