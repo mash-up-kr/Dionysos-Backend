@@ -14,8 +14,9 @@ public enum DionysosAPIErrorCode {
     UNAUTHORIZATION(1500, "JWT 인증에 실패하였습니다."),
     TOKEN_EXPIRED(1501, "토큰 기간이 만료됐습니다."),
 
-    NOT_EXIST_DIARY(2000, "존재하지 않는 일기입니다.");
+    NOT_EXIST_DIARY(2000, "존재하지 않는 일기입니다."),
 
+    NOT_EXIST_TIMEHISTORY(2500, "존재하지 않는 시간기록입니다.");
 
     private int code;
     private String message;

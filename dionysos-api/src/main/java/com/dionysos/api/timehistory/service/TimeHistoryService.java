@@ -4,6 +4,7 @@ import com.dionysos.api.timehistory.dto.RequestSaveTimeHistoryDto;
 import com.dionysos.api.timehistory.dto.ResponseRankingDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
 import com.dionysos.api.timehistory.entity.TimeHistory;
+import com.dionysos.api.timehistory.exception.NotFoundTimeHistoryException;
 import com.dionysos.api.timehistory.repository.TimeHistoryRepository;
 import com.dionysos.api.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,7 @@ public class TimeHistoryService {
                 getStandardTime(LocalDateTime.now()),
                 LocalDateTime.now()
         )
-                .orElseThrow(() -> new IllegalArgumentException("오늘 기록이 없습니다"));
+                .orElseThrow(NotFoundTimeHistoryException::new);
         return ResponseTimeHistoryDto.builder()
                 .historyDay(entity.getHistoryDay())
                 .duration(entity.getDuration())
