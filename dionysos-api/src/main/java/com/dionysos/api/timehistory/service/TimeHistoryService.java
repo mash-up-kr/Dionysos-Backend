@@ -26,38 +26,30 @@ import java.util.stream.Collectors;
 public class TimeHistoryService {
 
     private final TimeHistoryRepository timeHistoryRepository;
-    private final int stndHr = 6;
+    private static final int stndHour = 6;
+    private static final int stndMinute = 0;
 
     @Transactional
     public void createOrUpdate(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
                                User user
     ) {
-        Optional<TimeHistory> dayRecOptional = timeHistoryRepository.getTimeHistory(user.getId(),
-                getStandardTime(requestSaveTimeHistoryDto.getHistoryDay()),
-                requestSaveTimeHistoryDto.getHistoryDay());
-        if (dayRecOptional.isPresent()) {
-            dayRecOptional.get().update(requestSaveTimeHistoryDto.getDuration(), requestSaveTimeHistoryDto.getHistoryDay());
-        } else {
-            create(requestSaveTimeHistoryDto, user);
-        }
-    }
+        LocalDateTime standardTime = getStandardTime(requestSaveTimeHistoryDto.getHistoryDay());
+        TimeHistory timeHistory = timeHistoryRepository.getTimeHistory(user.getId(),
+                standardTime,
+                requestSaveTimeHistoryDto.getHistoryDay())
+                .orElseGet(() -> TimeHistory.builder()
+                        .user(user)
+                        .build());
+        timeHistory.update(requestSaveTimeHistoryDto.getDuration(), requestSaveTimeHistoryDto.getHistoryDay());
 
-    @Transactional
-    public void create(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
-                       User user
-    ) {
-        TimeHistory timeHistory = TimeHistory.builder()
-                .historyDay(requestSaveTimeHistoryDto.getHistoryDay())
-                .user(user)
-                .duration(requestSaveTimeHistoryDto.getDuration())
-                .build();
         timeHistoryRepository.save(timeHistory);
     }
 
     public ResponseTimeHistoryDto getTotalHrDay(User user) {
 
+        LocalDateTime standardTime = getStandardTime(LocalDateTime.now());
         TimeHistory entity = timeHistoryRepository.getDuration(user.getId(),
-                getStandardTime(LocalDateTime.now()),
+                standardTime,
                 LocalDateTime.now()
         )
                 .orElseThrow(NotFoundTimeHistoryException::new);
@@ -69,9 +61,9 @@ public class TimeHistoryService {
 
     private LocalDateTime getStandardTime(LocalDateTime dateTime) {
 
-        LocalTime time = LocalTime.of(6, 0);
+        LocalTime time = LocalTime.of(stndHour, stndMinute);
 
-        if (dateTime.getHour() < stndHr) {
+        if (dateTime.getHour() < stndHour) {
             dateTime = dateTime.minusDays(1);
             LocalDate date = dateTime.toLocalDate();
 
@@ -85,8 +77,9 @@ public class TimeHistoryService {
 
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> dayRanking() {
+        LocalDateTime standardTime = getStandardTime(LocalDateTime.now());
 
-        return timeHistoryRepository.dayRanking(getStandardTime(LocalDateTime.now()),
+        return timeHistoryRepository.dayRanking(standardTime,
                 LocalDateTime.now())
                 .stream()
                 .map(ResponseRankingDto::new)
@@ -114,9 +107,9 @@ public class TimeHistoryService {
     }
 
     private LocalDateTime findWklyStndTms() {
-        LocalDateTime time = LocalDate.now().atTime(stndHr, 0, 0);
+        LocalDateTime time = LocalDate.now().atTime(stndHour, stndMinute);
 
-        LocalTime baseTime = LocalTime.of(stndHr, 0,0);
+        LocalTime baseTime = LocalTime.of(stndHour, stndMinute);
         if(LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY)
                 && LocalTime.now().isAfter(baseTime)) { }
         else {
@@ -128,9 +121,9 @@ public class TimeHistoryService {
 
 
     private LocalDateTime findMnlyStndTms() {
-        LocalDateTime time = LocalDate.now().atTime(stndHr, 0, 0);
+        LocalDateTime time = LocalDate.now().atTime(stndHour, stndMinute);
 
-        LocalTime baseTime = LocalTime.of(stndHr, 0,0);
+        LocalTime baseTime = LocalTime.of(stndHour, stndMinute);
         if(LocalDateTime.now().getDayOfMonth()==1
                 && LocalTime.now().isBefore(baseTime)) {
             time = time.minusMonths(1);
