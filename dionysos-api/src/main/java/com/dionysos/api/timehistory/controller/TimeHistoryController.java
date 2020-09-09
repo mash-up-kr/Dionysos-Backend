@@ -4,6 +4,8 @@ import com.dionysos.api.common.response.DionysosAPIResponse;
 import com.dionysos.api.timehistory.dto.RequestSaveTimeHistoryDto;
 import com.dionysos.api.timehistory.dto.ResponseRankingDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
+import com.dionysos.api.timehistory.entity.RunningUser;
+import com.dionysos.api.timehistory.repository.RunningUserRedisRepository;
 import com.dionysos.api.timehistory.service.TimeHistoryService;
 import com.dionysos.api.user.entity.User;
 import com.dionysos.api.user.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/time-history")

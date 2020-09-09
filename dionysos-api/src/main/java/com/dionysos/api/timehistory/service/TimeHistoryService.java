@@ -3,8 +3,10 @@ package com.dionysos.api.timehistory.service;
 import com.dionysos.api.timehistory.dto.RequestSaveTimeHistoryDto;
 import com.dionysos.api.timehistory.dto.ResponseRankingDto;
 import com.dionysos.api.timehistory.dto.ResponseTimeHistoryDto;
+import com.dionysos.api.timehistory.entity.RunningUser;
 import com.dionysos.api.timehistory.entity.TimeHistory;
 import com.dionysos.api.timehistory.exception.NotFoundTimeHistoryException;
+import com.dionysos.api.timehistory.repository.RunningUserRedisRepository;
 import com.dionysos.api.timehistory.repository.TimeHistoryRepository;
 import com.dionysos.api.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class TimeHistoryService {
 
     private final TimeHistoryRepository timeHistoryRepository;
+    private final RunningUserRedisRepository runningUserRedisRepository;
     private static final int stndHour = 6;
     private static final int stndMinute = 0;
 
@@ -43,6 +45,10 @@ public class TimeHistoryService {
         timeHistory.update(requestSaveTimeHistoryDto.getDuration(), requestSaveTimeHistoryDto.getHistoryDay());
 
         timeHistoryRepository.save(timeHistory);
+        RunningUser running = runningUserRedisRepository.save(RunningUser.builder()
+                .userId(user.getId())
+                .duration(timeHistory.getDuration())
+                .build());
     }
 
     public ResponseTimeHistoryDto getTotalHrDay(User user) {
