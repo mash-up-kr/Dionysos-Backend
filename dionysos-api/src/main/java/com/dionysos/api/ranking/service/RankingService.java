@@ -1,5 +1,6 @@
 package com.dionysos.api.ranking.service;
 
+import com.dionysos.api.ranking.repository.RankingRepository;
 import com.dionysos.api.timehistory.dto.ResponseRankingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,14 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.dionysos.api.common.util.DateUtil.getStandardTime;
+import static com.dionysos.api.common.util.DateUtil.stndHr;
+
 @RequiredArgsConstructor
 @Service
 public class RankingService {
 
     private final RankingRepository rankingRepository;
-    private final int stndHr = 6;
 
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> dayRanking() {

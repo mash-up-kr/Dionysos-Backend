@@ -26,20 +26,20 @@ public class RankingController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/ranking/day")
+    @GetMapping("/day")
     public ResponseEntity<List<ResponseRankingDto>> dayRanking() {
         User user = userService.getFromUid();
         List<ResponseRankingDto> dtos = rankingService.dayRanking();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-    @GetMapping("/ranking/weekly")
+    @GetMapping("/weekly")
     public ResponseEntity<List<ResponseRankingDto>> weekRanking() {
         List<ResponseRankingDto> dtos = rankingService.weekRanking();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-    @GetMapping("/ranking/monthly")
+    @GetMapping("/monthly")
     public ResponseEntity<List<ResponseRankingDto>> monthRanking() {
         List<ResponseRankingDto> dtos = rankingService.monthRanking();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
