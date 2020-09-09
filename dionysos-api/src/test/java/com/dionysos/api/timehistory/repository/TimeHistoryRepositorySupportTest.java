@@ -62,13 +62,13 @@ public class TimeHistoryRepositorySupportTest {
         LocalDateTime begin = now.withHour(stndHr);
 
         if (now.isBefore(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), stndHr, 0, 0))) {
-            begin = now.minusDays(1).withHour(stndHr);
+            begin = begin.minusDays(1);
         }
 
         LocalDateTime end = now.withHour(stndHr - 1).withMinute(59).withSecond(59);
 
         if (now.isAfter(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), stndHr, 0, 0))) {
-            end = now.plusDays(1);
+            end = end.plusDays(1);
         }
 
         TimeHistory result = timeHistoryRepositorySupport.getTimeHistory(user.getId(), begin, end);
@@ -105,13 +105,13 @@ public class TimeHistoryRepositorySupportTest {
         LocalDateTime begin = now.withHour(stndHr);
 
         if (now.isBefore(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), stndHr, 0, 0))) {
-            begin = now.minusDays(1).withHour(stndHr);
+            begin = begin.minusDays(1);
         }
 
         LocalDateTime end = now.withHour(stndHr - 1).withMinute(59).withSecond(59);
 
         if (now.isAfter(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), stndHr, 0, 0))) {
-            end = now.plusDays(1);
+            end = end.plusDays(1);
         }
 
         TimeHistory result = timeHistoryRepositorySupport.getTimeHistory(user.getId(), begin, end);
@@ -147,13 +147,13 @@ public class TimeHistoryRepositorySupportTest {
         LocalDateTime begin = now.withHour(stndHr);
 
         if (now.isBefore(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), stndHr, 0, 0))) {
-            begin = now.minusDays(1).withHour(stndHr);
+            begin = begin.minusDays(1);
         }
 
         LocalDateTime end = now.withHour(stndHr - 1).withMinute(59).withSecond(59);
 
         if (now.isAfter(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), stndHr, 0, 0))) {
-            end = now.plusDays(1);
+            end = end.plusDays(1);
         }
 
         TimeHistory result = timeHistoryRepositorySupport.getTimeHistory(user.getId(), begin, end);
