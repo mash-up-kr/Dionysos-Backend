@@ -23,10 +23,9 @@ public class TimeHistory {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime historyDay;
     private Long duration;
-    private boolean isRunning;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     public User user;
 
     @Builder
@@ -37,7 +36,6 @@ public class TimeHistory {
         this.historyDay = historyDay;
         this.user = user;
         this.duration = duration;
-        this.isRunning = true;
     }
 
     public void update(Long duration,

@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Optional;
+
+import static com.dionysos.api.common.util.DateUtil.getStandardTime;
 
 
 @RequiredArgsConstructor
@@ -21,7 +21,6 @@ import java.util.Optional;
 public class TimeHistoryService {
 
     private final TimeHistoryRepository timeHistoryRepository;
-    private final int stndHr = 6;
 
     @Transactional
     public void createOrUpdate(RequestSaveTimeHistoryDto requestSaveTimeHistoryDto,
@@ -60,22 +59,6 @@ public class TimeHistoryService {
                 .historyDay(entity.getHistoryDay())
                 .duration(entity.getDuration())
                 .build();
-    }
-
-    private LocalDateTime getStandardTime(LocalDateTime dateTime) {
-
-        LocalTime time = LocalTime.of(6, 0);
-
-        if (dateTime.getHour() < stndHr) {
-            dateTime = dateTime.minusDays(1);
-            LocalDate date = dateTime.toLocalDate();
-
-            return LocalDateTime.of(date, time);
-        } else {
-            LocalDate date = dateTime.toLocalDate();
-
-            return LocalDateTime.of(date, time);
-        }
     }
 
 }
