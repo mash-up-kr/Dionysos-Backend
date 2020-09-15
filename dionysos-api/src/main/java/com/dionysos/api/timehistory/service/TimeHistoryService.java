@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class TimeHistoryService {
 
     private final TimeHistoryRepository timeHistoryRepository;
     private final RunningUserRedisRepository runningUserRedisRepository;
-    private static final int stndHour = 6;
+    private static final int stndHour = 5;
     private static final int stndMinute = 0;
 
     @Transactional
@@ -140,4 +141,5 @@ public class TimeHistoryService {
 
         return time;
     }
+
 }
