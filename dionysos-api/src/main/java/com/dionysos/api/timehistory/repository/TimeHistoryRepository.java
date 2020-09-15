@@ -22,7 +22,6 @@ public interface TimeHistoryRepository extends JpaRepository<TimeHistory, Long> 
     @Query(nativeQuery = true, value = "SELECT * FROM TIME_HISTORY t WHERE t.HISTORY_DAY BETWEEN ?1 AND ?2 ORDER BY t.DURATION DESC")
     List<TimeHistory> dayRanking(LocalDateTime begin, LocalDateTime end);
 
-    //주간, 월간은 GROUP BY user로
     @Query(nativeQuery = true, value = "SELECT t.USER_ID AS ID, SUM(t.DURATION) AS DURATION FROM TIME_HISTORY t WHERE t.HISTORY_DAY BETWEEN ?1 AND ?2 " +
             "GROUP BY t.USER_ID ORDER BY SUM(t.DURATION) DESC")
     List<ResponseRankingWeekMonthDto> weeklyMonthlyRanking(LocalDateTime begin, LocalDateTime end);
