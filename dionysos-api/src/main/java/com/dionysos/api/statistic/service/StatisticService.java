@@ -30,8 +30,8 @@ public class StatisticService {
         Long userId = user.getId();
         LocalDateTime beginTimeStamp = getBeginTimeStamp(year, month);
         LocalDateTime endTimeStamp = getEndTimeStamp(year, month);
-        List<TimeHistory> timeHistoryList = statisticRepository.getHistoryDayAndDuration(userId, beginTimeStamp, endTimeStamp);
 
+        List<TimeHistory> timeHistoryList = statisticRepository.getHistoryDayAndDuration(userId, beginTimeStamp, endTimeStamp);
         return getDayHistoryFromList(timeHistoryList);
     }
 
@@ -39,12 +39,14 @@ public class StatisticService {
         int firstDayOfMonth = 1;
         LocalDate date = YearMonth.of(year, month).atDay(firstDayOfMonth);
         LocalTime time = LocalTime.of(STANDARD_HOUR, 0);
+
         return LocalDateTime.of(date, time);
     }
 
     private LocalDateTime getEndTimeStamp(int year, int month) {
         LocalDate date = YearMonth.of(year, month).atEndOfMonth().plusDays(1);
         LocalTime time = LocalTime.of(STANDARD_HOUR, 0).minusSeconds(1);
+
         return LocalDateTime.of(date, time);
     }
 
