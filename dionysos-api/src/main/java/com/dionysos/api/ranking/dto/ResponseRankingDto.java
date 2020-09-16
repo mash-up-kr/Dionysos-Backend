@@ -26,7 +26,6 @@ public class ResponseRankingDto {
 
     @Builder
     public ResponseRankingDto(ResponseRankingDtoImpl responseRankingWeekMonthDto) {
-        System.out.println("builder : " + responseRankingWeekMonthDto.getId());
         this.userId = responseRankingWeekMonthDto.getId();
         this.duration = responseRankingWeekMonthDto.getDuration();
     }

@@ -90,7 +90,6 @@ public class RankingService {
 
     private void setNickname(List<ResponseRankingDto> dtos) {
         for(ResponseRankingDto dto : dtos) {
-            System.out.println(dto.getUserId());
             String nickname = userRepository.findById(dto.getUserId()).getNickname();
             dto.update(nickname);
         }
