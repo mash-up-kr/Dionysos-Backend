@@ -1,9 +1,10 @@
 package com.dionysos.api.user.entity;
 
-import com.dionysos.api.diary.entity.Diary;
+import com.dionysos.api.timehistory.entity.TimeHistory;
 import lombok.*;
 
 import javax.persistence.*;
+import com.dionysos.api.diary.entity.Diary;
 import java.util.List;
 
 @Getter
@@ -20,12 +21,15 @@ public class User {
 
     private String nickname;
 
+    @OneToMany(mappedBy = "user")
+    private List<TimeHistory> timeHistoryList;
+
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
-    private List<Diary> diaries;
+    private List<Diary> diaryList;
 
     @Builder
     private User(String uid,
