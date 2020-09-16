@@ -22,14 +22,14 @@ public class User {
     private String nickname;
 
     @OneToMany(mappedBy = "user")
-    private List<TimeHistory> timeHistoriesList;
+    private List<TimeHistory> timeHistoryList;
 
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
-    private List<Diary> diaries;
+    private List<Diary> diaryList;
 
     @Builder
     private User(String uid,
