@@ -8,24 +8,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 
 @Getter
 public class ResponseRankingDto {
 
-    private Long id;
+    private Long userId;
     private String nickname;
     private Long duration;
 
     @Builder
     public ResponseRankingDto(TimeHistory entity) {
+        this.userId = entity.getUser().getId();
         this.nickname = entity.getUser().getNickname();
         this.duration = entity.getDuration();
     }
 
     @Builder
     public ResponseRankingDto(ResponseRankingDtoImpl responseRankingWeekMonthDto) {
-        this.id = responseRankingWeekMonthDto.getId();
-        //this.nickname = getUser(responseRankingWeekMonthDto.getId()).getNickname();
+        System.out.println("builder : " + responseRankingWeekMonthDto.getId());
+        this.userId = responseRankingWeekMonthDto.getId();
         this.duration = responseRankingWeekMonthDto.getDuration();
+    }
+
+    public void update(String nickname) {
+        this.nickname = nickname;
     }
 }

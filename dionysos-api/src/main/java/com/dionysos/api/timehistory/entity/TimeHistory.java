@@ -26,7 +26,7 @@ public class TimeHistory {
     private boolean isRunning;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="user_id")
     public User user;
 
     @Builder

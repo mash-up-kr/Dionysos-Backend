@@ -3,6 +3,7 @@ package com.dionysos.api.ranking.service;
 import com.dionysos.api.common.util.DateUtil;
 import com.dionysos.api.ranking.repository.RankingRepository;
 import com.dionysos.api.ranking.dto.ResponseRankingDto;
+import com.dionysos.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import static com.dionysos.api.common.util.DateUtil.getStandardTime;
 public class RankingService {
 
     private final RankingRepository rankingRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> getDailyRanking() {
@@ -36,21 +38,27 @@ public class RankingService {
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> getWeeklyRanking() {
 
-        return rankingRepository.weeklyMonthlyRanking(findWklyStandardTms(),
+        List<ResponseRankingDto> dtos = rankingRepository.weeklyMonthlyRanking(findWklyStandardTms(),
                 LocalDateTime.now())
                 .stream()
                 .map(ResponseRankingDto::new)
                 .collect(Collectors.toList());
+        setNickname(dtos);
+
+        return dtos;
     }
 
     @Transactional(readOnly = true)
     public List<ResponseRankingDto> getMonthlyRanking() {
 
-        return rankingRepository.weeklyMonthlyRanking(findMonthlyStandardTms(),
+        List<ResponseRankingDto> dtos = rankingRepository.weeklyMonthlyRanking(findMonthlyStandardTms(),
                 LocalDateTime.now())
                 .stream()
                 .map(ResponseRankingDto::new)
                 .collect(Collectors.toList());
+        setNickname(dtos);
+
+        return dtos;
     }
 
     private LocalDateTime findWklyStandardTms() {
@@ -78,5 +86,13 @@ public class RankingService {
 
     private boolean isBeforeBaseTimeStamp(int day, LocalTime baseTime) {
         return (day==1) && (LocalTime.now().isBefore(baseTime));
+    }
+
+    private void setNickname(List<ResponseRankingDto> dtos) {
+        for(ResponseRankingDto dto : dtos) {
+            System.out.println(dto.getUserId());
+            String nickname = userRepository.findById(dto.getUserId()).getNickname();
+            dto.update(nickname);
+        }
     }
 }
