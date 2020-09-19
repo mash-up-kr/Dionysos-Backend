@@ -1,9 +1,10 @@
 package com.dionysos.api.user.entity;
 
-import com.dionysos.api.diary.entity.Diary;
+import com.dionysos.api.timehistory.entity.TimeHistory;
 import lombok.*;
 
 import javax.persistence.*;
+import com.dionysos.api.diary.entity.Diary;
 import java.util.List;
 
 @Getter
@@ -19,6 +20,9 @@ public class User {
     private String uid;
 
     private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    private List<TimeHistory> timeHistoriesList;
 
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
