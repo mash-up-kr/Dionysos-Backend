@@ -2,6 +2,8 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
 name: Mogakgong Deploy
+env:
+  PROJECT_NAME: dionysos-mogakgong
 
 on:
   push:
@@ -43,7 +45,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 cp --region us-east-2 ./$GITHUB_SHA.zip s3://isntyet-deploy/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://dionysos-mogakgong/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name testapp --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=isntyet-deploy,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws deploy create-deployment --application-name dionysos-mogakgong --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=dionysos-mogakgong,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
