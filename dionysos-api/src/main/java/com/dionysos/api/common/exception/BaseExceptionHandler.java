@@ -44,6 +44,9 @@ public class BaseExceptionHandler {
             case NOT_EXIST_DIARY:
                 httpStatus = HttpStatus.BAD_REQUEST;
                 break;
+            case NOT_EXIST_TIMEHISTORY:
+                httpStatus = HttpStatus.BAD_REQUEST;
+                break;
             default:
                 throw new RuntimeException();
         }
